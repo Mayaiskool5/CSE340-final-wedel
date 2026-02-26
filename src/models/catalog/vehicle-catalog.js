@@ -66,34 +66,34 @@ const getSectionsByVehicle = async (identifier, identifierType = 'slug', sortBy 
 };
 
 /**
- * Core function that gets all courses taught by a specific faculty member.
- * Similar pattern to getSectionsByCourse - same logic, different perspective.
+ * Core function that gets all vehicles by a specific vehicle member.
+ * Similar pattern to getSectionsByVehicle - same logic, different perspective.
  * 
- * @param {string|number} identifier - Faculty ID or slug
+ * @param {string|number} identifier - Vehicle ID or slug
  * @param {string} identifierType - 'id' or 'slug' (default: 'slug')
- * @param {string} sortBy - Sort option: 'time', 'room', or 'course' (default: 'time')
- * @returns {Promise<Array>} Array of section objects with course, faculty, and department info
+ * @param {string} sortBy - Sort option: 'make', 'model', or 'year' (default: 'year')
+ * @returns {Promise<Array>} Array of section objects with vehicles, faculty, and vehicle info
  */
-const getCoursesByFaculty = async (identifier, identifierType = 'slug', sortBy = 'year') => {
-    // Search by faculty ID or faculty slug
+const getVehiclesByVehicle = async (identifier, identifierType = 'slug', sortBy = 'year') => {
+    // Search by vehicle ID or vehicle slug
     const whereClause = identifierType === 'id' ? 'f.id = $1' : 'f.slug = $1';
     
-    // Different sorting options - by time, room, or course code
+    // Different sorting options - by make, model, year, or default to time (which is extracted from the catalog)
     const orderByClause = sortBy === 'make' ? 'cat.make' : 
                           sortBy === 'model' ? 'cat.model' :
                           sortBy === 'year' ? 'cat.year DESC' :
                           "SUBSTRING(cat.time FROM '(\\d{1,2}):(\\d{2})')::INTEGER";
     
-    // Same JOIN pattern - catalog connects courses to faculty
+    // Same JOIN pattern - catalog connects makes to vehicles
     const query = `
         SELECT cat.id, cat.make, cat.model, cat.year,
-               c.vehicle_code, c.name as course_name, c.description, c.credit_hours,
-               f.first_name, f.slug as vehicle_slug, f.title as vehicle_title,
-               d.name as department_name, d.code as department_code
+               c.vehicle_code, c.name as vehicle_name, c.description, c.credit_hours,
+               f.name, f.slug as vehicle_slug, f.title as vehicle_title,
+               d.name as vehicle_name, d.code as vehicle_code
         FROM catalog cat
         JOIN vehicles c ON cat.vehicle_slug = c.slug
         JOIN vehicle f ON cat.vehicle_slug = f.slug
-        JOIN departments d ON c.department_id = d.id
+        JOIN vehicles d ON c.vehicle_id = d.id
         WHERE ${whereClause}
         ORDER BY ${orderByClause}
     `;
@@ -106,14 +106,14 @@ const getCoursesByFaculty = async (identifier, identifierType = 'slug', sortBy =
         model: section.model,
         year: section.year,
         vehicleCode: section.vehicle_code,
-        vehicleName: section.course_name,
-        description: section.description,
+        vehicleName: section.vehicle_name,
+        description: section.make,
         creditHours: section.credit_hours,
         vehicle: `${section.first_name}`,
         vehicleSlug: section.vehicle_slug,
         vehicleTitle: section.vehicle_title,
-        department: section.department_name,
-        departmentCode: section.department_code
+        department: section.vehicle_name,
+        departmentCode: section.vehicle_code
     }));
 };
 
@@ -128,15 +128,15 @@ const getSectionsByVehicleId = (vehicleId, sortBy = 'year') =>
 const getSectionsByVehicleSlug = (vehicleSlug, sortBy = 'year') => 
     getSectionsByVehicle(vehicleSlug, 'slug', sortBy);
 
-const getCoursesByVehicleId = (vehicleId, sortBy = 'year') => 
-    getCoursesByVehicle(vehicleId, 'id', sortBy);
+const getVehiclesByVehicleId = (vehicleId, sortBy = 'year') => 
+    getVehiclesByVehicle(vehicleId, 'id', sortBy);
 
-const getCoursesByVehicleSlug = (vehicleSlug, sortBy = 'year') => 
-    getCoursesByVehicle(vehicleSlug, 'slug', sortBy);
+const getVehiclesByVehicleSlug = (vehicleSlug, sortBy = 'year') => 
+    getVehiclesByVehicle(vehicleSlug, 'slug', sortBy);
 
 export { 
     getSectionsByVehicleId,
     getSectionsByVehicleSlug,
-    getCoursesByVehicleId,
-    getCoursesByVehicleSlug
+    getVehiclesByVehicleId,
+    getVehiclesByVehicleSlug
 };

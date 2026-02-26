@@ -1,4 +1,5 @@
-import { getAllVehicles, getvehiclesBySlug, getSectionsByCourseSlug } from '../../models/catalog/vehicle-catalog.js';
+import { getAllVehicles, getvehiclesBySlug } from '../../models/catalog/vehicle-catalog.js';
+import { getSectionsByCourseSlug } from '../../models/catalog/vehicle-catalog.js';
 
 // Route handler for the course catalog list page
 const vehicleCatalogPage = async (req, res) => {
