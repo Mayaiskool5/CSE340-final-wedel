@@ -46,7 +46,7 @@ const getVehicle = async (identifier, identifierType = 'id') => {
  * @param {string} sortBy - Sort option: 'make' (default), 'name', 'title'
  * @returns {Promise<Array>} Array of vehicle objects sorted by the specified field
  */
-const getSortedVehicles = async (sortBy = 'make') => {
+const getSortedVehicle = async (sortBy = 'make') => {
     /**
      * Build ORDER BY clause - notice we sort by names.
      * This is the standard way to alphabetize vehicles names.
@@ -115,4 +115,7 @@ const getVehiclesByMake = async (makeId, sortBy = 'name') => {
 const getVehicleById = (vehicleId) => getVehicle(vehicleId, 'id');
 const getVehicleBySlug = (vehicleSlug) => getVehicle(vehicleSlug, 'slug');
 
-export { getVehicleById, getVehicleBySlug, getSortedVehicles, getVehiclesByMake };
+export { getVehicleById, 
+        getVehicleBySlug, 
+        getSortedVehicle,
+        getVehiclesByMake };

@@ -1,5 +1,5 @@
-import { getAllVehicles, getvehiclesBySlug } from '../../models/catalog/vehicle-catalog.js';
-import { getSectionsByCourseSlug } from '../../models/catalog/vehicle-catalog.js';
+import { getAllVehicles, getVehiclesBySlug } from '../../models/catalog/vehicle-catalog.js';
+import { getSectionsByVehicleSlug } from '../../models/catalog/vehicle-catalog.js';
 
 // Route handler for the course catalog list page
 const vehicleCatalogPage = async (req, res) => {
@@ -14,7 +14,7 @@ const vehicleCatalogPage = async (req, res) => {
 // Route handler for individual vehicle detail pages
 const vehicleDetailPage = async (req, res, next) => {
     const vehicleSlug = req.params.slugId;
-    const vehicle = await getvehiclesBySlug(vehicleSlug);
+    const vehicle = await getVehiclesBySlug(vehicleSlug);
 
     // Our model returns empty object {} when not found, not null
     // Check if the object is empty using Object.keys()
@@ -27,14 +27,19 @@ const vehicleDetailPage = async (req, res, next) => {
     // Get sections (course offerings) separately from the catalog
     // Pass the sortBy parameter directly to the model - PostgreSQL handles the sorting
     const sortBy = req.query.sort || 'year_desc'; // Default sorting by year descending
-    const sections = await getSectionsByCourseSlug(vehicleSlug, sortBy);
+    const sections = await getSectionsByVehicleSlug(vehicleSlug, sortBy);
     
     res.render('catalog/detail', {
-        title: `${vehicle.vehicleCode} - ${vehicle.name}`,
+        title: `${vehicle.vehicle.code} - ${vehicle.vehicle.name}`,
         vehicle: vehicle,
         sections: sections,
         currentSort: sortBy
     });
 };
 
-export { vehicleCatalogPage, vehicleDetailPage };
+export { vehicleCatalogPage, 
+        vehicleDetailPage, 
+        getAllVehicles, 
+        getVehiclesBySlug, 
+        getSectionsByVehicleSlug 
+    };

@@ -67,7 +67,9 @@ router.use('/login', (req, res, next) => {
 });
 
 // Login routes (form and submission)
-router.use('/login', loginRoutes, loginValidation, processLogin);
+router.use('/login', loginRoutes);
+
+router.post('/login', loginValidation, processLogin);
 
 // Validation rules for registration form
 router.use('/register', editValidation);

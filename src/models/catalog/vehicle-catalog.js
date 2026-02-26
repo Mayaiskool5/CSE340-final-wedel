@@ -1,142 +1,97 @@
 import db from '../db.js';
 
 /**
- * Core function that gets all sections (course offerings) for a specific course.
- * Works with either course ID or slug - this pattern reduces code duplication.
- * 
- * @param {string|number} identifier - Course ID or slug
- * @param {string} identifierType - 'id' or 'slug' (default: 'slug')
- * @param {string} sortBy - Sort option: 'time', 'room', or 'professor' (default: 'time')
- * @returns {Promise<Array>} Array of section objects with course, faculty, and department info
+ * Helper to generate the ORDER BY clause safely.
  */
-const getSectionsByVehicle = async (identifier, identifierType = 'slug', sortBy = 'time') => {
-    // Build WHERE clause dynamically based on whether we're searching by ID or slug
-    // Using $1 prevents SQL injection - never concatenate user input into SQL!
-    const whereClause = identifierType === 'id' ? 'c.id = $1' : 'c.slug = $1';
-    
-    /**
-     * Let PostgreSQL do the sorting - it's faster than sorting in JavaScript.
-     * SUBSTRING with regex extracts the hour from time strings like "Mon Wed Fri 8:00-8:50".
-     * The ::INTEGER cast converts the extracted string to a number for proper sorting.
-     */
-    const orderByClause = sortBy === 'make' ? 'cat.make' : 
-                          sortBy === 'model' ? 'cat.model' :
-                          "SUBSTRING(cat.time FROM '(\\d{1,2}):(\\d{2})')::INTEGER";
-    
-    /**
-     * Join catalog with courses, faculty, and departments to get complete information.
-     * Note: We're using template literals for ORDER BY because PostgreSQL doesn't allow
-     * parameterized ORDER BY clauses. The values are whitelisted above, so this is safe.
-     */
-    const query = `
-        SELECT cat.id, cat.make, cat.model, cat.year, cat.slug as vehicle_slug,
-               c.vehicle_code, c.name as vehicle_model, c.description, c.credit_years,
-               f.first_name, f.slug as vehicle_slug, f.title as vehicle_title,
-               d.name as department_name, d.code as department_code
-        FROM catalog cat
-        JOIN vehicles c ON cat.vehicles_slug = c.slug
-        JOIN vehicle f ON cat.vehicle_slug = f.slug
-        JOIN departments d ON c.department_id = d.id
-        WHERE ${whereClause}
-        ORDER BY ${orderByClause}
-    `;
-    
-    const result = await db.query(query, [identifier]);
-    
-    /**
-     * Transform database column names (snake_case) to JavaScript convention (camelCase).
-     * This is a common pattern when working with databases in JavaScript.
-     */
-    return result.rows.map(section => ({
-        id: section.id,
-        make: section.make,
-        model: section.model,
-        year: section.year,
-        vehicleSlug: section.vehicle_slug,
-        vehicleCode: section.vehicle_code,
-        vehicleModel: section.vehicle_model,
-        description: section.description,
-        creditHours: section.credit_years,
-        Make: `${section.first_name}`,
-        makeSlug: section.vehicle_slug,
-        makeTitle: section.vehicle_title,
-        department: section.department_name,
-        departmentCode: section.department_code
-    }));
+const getSortClause = (sortBy) => {
+    const sortMap = {
+        'make': 'cat.make_name',
+        'model': 'cat.model_name',
+        'year': 'cat.year DESC',
+        'year_desc': 'cat.year DESC',
+        'time': "SUBSTRING(cat.time FROM '(\\d{1,2}):(\\d{2})')::INTEGER"
+    };
+    return sortMap[sortBy] || sortMap['year_desc'];
 };
 
 /**
- * Core function that gets all vehicles by a specific vehicle member.
- * Similar pattern to getSectionsByVehicle - same logic, different perspective.
- * 
- * @param {string|number} identifier - Vehicle ID or slug
- * @param {string} identifierType - 'id' or 'slug' (default: 'slug')
- * @param {string} sortBy - Sort option: 'make', 'model', or 'year' (default: 'year')
- * @returns {Promise<Array>} Array of section objects with vehicles, faculty, and vehicle info
+ * Core function to fetch catalog entries.
  */
-const getVehiclesByVehicle = async (identifier, identifierType = 'slug', sortBy = 'year') => {
-    // Search by vehicle ID or vehicle slug
-    const whereClause = identifierType === 'id' ? 'f.id = $1' : 'f.slug = $1';
-    
-    // Different sorting options - by make, model, year, or default to time (which is extracted from the catalog)
-    const orderByClause = sortBy === 'make' ? 'cat.make' : 
-                          sortBy === 'model' ? 'cat.model' :
-                          sortBy === 'year' ? 'cat.year DESC' :
-                          "SUBSTRING(cat.time FROM '(\\d{1,2}):(\\d{2})')::INTEGER";
-    
-    // Same JOIN pattern - catalog connects makes to vehicles
+const getCatalogData = async (identifier, identifierType = 'slug', sortBy = 'year', filterBy = 'vehicle') => {
+    const whereClause = identifierType === 'id' ? 
+        (filterBy === 'vehicle' ? 'v.id = $1' : 'm.id = $1') : 
+        (filterBy === 'vehicle' ? 'v.slug = $1' : 'm.slug = $1');
+
+    const orderByClause = getSortClause(sortBy);
+
     const query = `
-        SELECT cat.id, cat.make, cat.model, cat.year,
-               c.vehicle_code, c.name as vehicle_name, c.description, c.credit_hours,
-               f.name, f.slug as vehicle_slug, f.title as vehicle_title,
-               d.name as vehicle_name, d.code as vehicle_code
+        SELECT 
+            cat.id, cat.make_name, cat.model_name, cat.year,
+            v.vehicle_code, v.name as vehicle_display_name, v.description,
+            m.first_name as owner_first_name, m.last_name as owner_last_name, 
+            m.slug as owner_slug,
+            d.name as dept_name, d.code as dept_code
         FROM catalog cat
-        JOIN vehicles c ON cat.vehicle_slug = c.slug
-        JOIN vehicle f ON cat.vehicle_slug = f.slug
-        JOIN vehicles d ON c.vehicle_id = d.id
+        JOIN vehicles v ON cat.vehicle_slug = v.slug
+        JOIN members m ON cat.member_slug = m.slug
+        JOIN departments d ON v.department_id = d.id
         WHERE ${whereClause}
         ORDER BY ${orderByClause}
     `;
-    
-    const result = await db.query(query, [identifier]);
-    
-    return result.rows.map(section => ({
-        id: section.id,
-        make: section.make,
-        model: section.model,
-        year: section.year,
-        vehicleCode: section.vehicle_code,
-        vehicleName: section.vehicle_name,
-        description: section.make,
-        creditHours: section.credit_hours,
-        vehicle: `${section.first_name}`,
-        vehicleSlug: section.vehicle_slug,
-        vehicleTitle: section.vehicle_title,
-        department: section.vehicle_name,
-        departmentCode: section.vehicle_code
+
+    const { rows } = await db.query(query, [identifier]);
+
+    return rows.map(row => ({
+        id: row.id,
+        make: row.make_name,
+        model: row.model_name,
+        year: row.year,
+        vehicle: {
+            code: row.vehicle_code,
+            name: row.vehicle_display_name,
+            description: row.description
+        },
+        owner: {
+            fullName: `${row.owner_first_name} ${row.owner_last_name}`,
+            slug: row.owner_slug
+        },
+        department: {
+            name: row.dept_name,
+            code: row.dept_code
+        }
     }));
 };
 
-/**
- * Wrapper functions maintain backward compatibility with existing code.
- * These let us keep the same API while using consolidated core functions internally.
- * Example: getSectionsByVehicleId(5) calls getSectionsByVehicle(5, 'id')
- */
-const getSectionsByVehicleId = (vehicleId, sortBy = 'year') => 
-    getSectionsByVehicle(vehicleId, 'id', sortBy);
+const getSectionsByVehicleId = (id, sort) => getCatalogData(id, 'id', sort, 'vehicle');
+const getSectionsByVehicleSlug = (slug, sort) => getCatalogData(slug, 'slug', sort, 'vehicle');
+const getVehiclesByOwnerId = (id, sort) => getCatalogData(id, 'id', sort, 'owner');
+const getVehiclesByOwnerSlug = (slug, sort) => getCatalogData(slug, 'slug', sort, 'owner');
 
-const getSectionsByVehicleSlug = (vehicleSlug, sortBy = 'year') => 
-    getSectionsByVehicle(vehicleSlug, 'slug', sortBy);
-
-const getVehiclesByVehicleId = (vehicleId, sortBy = 'year') => 
-    getVehiclesByVehicle(vehicleId, 'id', sortBy);
-
-const getVehiclesByVehicleSlug = (vehicleSlug, sortBy = 'year') => 
-    getVehiclesByVehicle(vehicleSlug, 'slug', sortBy);
-
-export { 
-    getSectionsByVehicleId,
-    getSectionsByVehicleSlug,
-    getVehiclesByVehicleId,
-    getVehiclesByVehicleSlug
+const getAllVehicles = async () => {
+    const query = `
+        SELECT DISTINCT ON (slug) 
+            v.id, v.name, v.vehicle_code as code, v.description, v.slug 
+        FROM vehicles v
+        ORDER BY slug, name ASC
+    `;
+    const { rows } = await db.query(query);
+    return rows;
 };
+
+const getVehiclesBySlug = async (slug) => {
+    const query = `
+        SELECT id, name, vehicle_code as code, description, slug 
+        FROM vehicles 
+        WHERE slug = $1
+    `;
+    const { rows } = await db.query(query, [slug]);
+    return rows[0] || {}; // Return empty object if not found to match your controller logic
+};
+
+export { getAllVehicles,
+        getVehiclesBySlug,
+        getSectionsByVehicleId, 
+        getSectionsByVehicleSlug, 
+        getVehiclesByOwnerId,
+        getVehiclesByOwnerSlug 
+    };
