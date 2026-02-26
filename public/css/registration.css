@@ -53,7 +53,7 @@
     button[type="submit"] {
         width: 100%;
         padding: 1rem;
-        background-color: #2c5aa0;
+        background-color: #07470a;
         color: white;
         border: none;
         border-radius: 6px;
@@ -63,7 +63,7 @@
         transition: background-color 0.3s ease;
 
         &:hover {
-            background-color: #1e3a6f;
+            background-color: #23aa2a;
         }
 
         &:disabled {
@@ -99,11 +99,11 @@
             align-items: center;
             margin-bottom: 1rem;
             padding-bottom: 1rem;
-            border-bottom: 2px solid #2c5aa0;
+            border-bottom: 2px solid #0d9223;
 
             h3 {
                 margin: 0;
-                color: #2c5aa0;
+                color: #11a719;
                 font-size: 1.25rem;
             }
 
