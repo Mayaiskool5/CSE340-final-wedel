@@ -1,0 +1,74 @@
+<%- include('../../partials/header') %>
+<main>
+    <h1><%= title %></h1>
+    <p>
+        Register for a new account by providing your information below. All fields are required and passwords must meet security requirements.
+    </p>
+
+    <form method="POST" action="/register" class="registration-form">
+        <% if (locals.message) { %>
+            <p class="error-message"><%= message %></p>
+        <% } %>
+        
+        <% if (locals.errors) { %>
+            <ul class="error-list">
+                <% errors.forEach(function(error) { %>
+                    <li><%= error.msg %></li>
+                <% }); %>
+            </ul>
+        <% } %>
+        
+        <!-- Name field -->
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" name="name" value="<%= locals.formData ? formData.name : '' %>" required placeholder="Enter your full name">
+        </div>
+
+        <!-- Email field -->
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" name="email" value="<%= locals.formData ? formData.email : '' %>" required placeholder="Enter your email">
+        </div>
+
+        <!-- Email confirmation field -->
+        <div class="form-group">
+            <label for="emailConfirm">Confirm Email Address</label>
+            <input type="email" id="emailConfirm" name="emailConfirm" autocomplete="email" required placeholder="Re-enter your email" value="<%= locals.values?.emailConfirm || '' %>">
+        </div>
+
+        <!-- Password field -->
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                autocomplete="new-password"
+                minlength="8" 
+                aria-describedby="password-requirements"
+                required
+            >
+            <div id="password-requirements" class="help-text">
+                Must be at least 8 characters with a number and special character.
+            </div>
+        </div>
+
+        <!-- Password confirmation field -->
+        <div class="form-group">
+            <label for="passwordConfirm">Confirm Password</label>
+            <input 
+                type="password" 
+                id="passwordConfirm" 
+                name="passwordConfirm" 
+                autocomplete="new-password"
+                minlength="8" 
+                required>
+        </div>
+
+        <!-- Submit button -->
+        <div class="form-actions">
+            <button type="submit">Create Account</button>
+        </div>
+    </form>
+</main>
+<%- include('../../partials/footer') %>

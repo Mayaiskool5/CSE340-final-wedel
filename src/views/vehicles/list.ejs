@@ -1,0 +1,20 @@
+<%- include('../partials/header') %>
+<link rel="stylesheet" href="/css/main.css">
+<main>
+    <h1>Vehicles</h1>
+    <div class="vehicle-grid">
+        <% vehicles.forEach(vehicle => { %>
+            <div class="vehicle-card">
+                <img 
+                    src="/images/vehicles/<%= vehicle.slug %>.jpg" 
+                    alt="Photo of <%= vehicle.name %>" 
+                    class="vehicle-photo"
+                >
+                <h3><a href="/vehicles/<%= vehicle.slug %>"><%= vehicle.name %></a></h3>
+                <p><strong><%= vehicle.name %></strong></p>
+                <p><%= vehicle.department %></p>
+            </div>
+        <% }) %>
+    </div>
+</main>
+<%- include('../partials/footer') %>

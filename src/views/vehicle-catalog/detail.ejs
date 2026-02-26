@@ -1,0 +1,54 @@
+<%- include('../partials/header') %>
+
+<link rel="stylesheet" href="/css/vehicle-catalog.css">
+<link rel="stylesheet" href="/css/main.css">
+
+<main>
+    <% if (Object.keys(queryParams).length > 0) { %>
+        <div class="sort-message">
+            <p>Query parameters: <%= JSON.stringify(queryParams) %></p>
+        <% if (queryParams.sort) { %>
+            <p>Currently sorted by: <%= queryParams.sort %></p>
+        <% } else { %>
+            <p>No sorting applied, using default sorting by time.</p>
+    <% } %>
+        </div>
+    <% } else { %>
+        <div class="sort-message">
+            <p>No query parameters provided. Using default sorting by time.</p>
+        </div>
+    <% } %>
+
+    <div class="vehicle-header">
+        <h1><%= vehicle.name %></h1>
+        <p class="vehicle-meta"><%= vehicle.vehicleCode %> • <%= vehicle.year %> • <%= vehicle.make %> <%= vehicle.model %></p>
+        <p class="vehicle-description"><%= vehicle.description %></p>
+    </div>
+
+    <div class="sections">
+        <div class="sections-header">
+            <h2>Available Sections</h2>
+            <div class="sort-options">
+                <span>Sort by: </span>
+                <a href="/vehicles/<%= vehicle.slug %>?sort=make" class="<%= currentSort === 'make' ? 'active' : '' %>">Make</a>
+                <a href="/vehicles/<%= vehicle.slug %>?sort=model" class="<%= currentSort === 'model' ? 'active' : '' %>">Model</a>
+                <a href="/vehicles/<%= vehicle.slug %>" class="<%= currentSort === 'year' ? 'active' : '' %>">Year</a>
+            </div>
+        </div>
+
+        <div class="section-list">
+            <% sections.forEach(section => { %>
+                <div class="section-card">
+                    <div class="section-make">Make: <%= section.make %></div>
+                    <div class="section-model">Model: <%= section.model %></div>
+                    <div class="section-year"><%= section.year %></div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <p><a href="/catalog">&larr; Back to Vehicle Catalog</a></p>
+    </div>
+</main>
+<%- include('../partials/footer') %>

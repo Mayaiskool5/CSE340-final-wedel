@@ -1,0 +1,19 @@
+<%- include('../partials/header') %>
+<link rel="stylesheet" href="/css/vehicle-catalog.css">
+<link rel="stylesheet" href="/css/main.css">
+<main>
+    <h1>Vehicle Catalog</h1>
+    <p>Browse our available vehicles and click on any vehicle to see detailed information.</p>
+
+    <div class="vehicle-list">
+        <% Object.values(vehicles).forEach(vehicle => { %>
+            <div class="vehicle-card">
+                <img src="<%= vehicle.primary_image %>" alt="<%= vehicle.name %>" class="vehicle-image">
+                <h3><a href="/vehicles/<%= vehicle.slug %>" class="btn"><%= vehicle.name %></a></h3>
+                <p class="vehicle-id"><%= vehicle.vehicleCode %></p>
+                <p class="vehicle-description"><%= vehicle.description %></p>
+            </div>
+        <% }); %>
+    </div>
+</main>
+<%- include('../partials/footer') %>
