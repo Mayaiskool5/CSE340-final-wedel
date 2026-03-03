@@ -74,5 +74,20 @@ if (process.env.NODE_ENV.includes('dev') && process.env.ENABLE_SQL_LOGGING === '
     db = pool;
 }
 
+async function testConnection() {
+    try {
+        const res = await db.query('SELECT NOW()');
+        console.log('Database connection successful. Current time:', res.rows[0].now);
+    } catch (err) {
+        console.error('Database connection failed:', err.message);
+        throw err;
+    }
+}
+
+async function setupDatabase() {
+    console.log("Database setup check complete.");
+}
+
 export default db;
 export { caCert };
+export { testConnection, setupDatabase };

@@ -1,6 +1,12 @@
 // Route handlers for static pages
 const homePage = (req, res) => {
-    res.render('home', { title: 'Home' });
+
+    const featuredVehicles = []; 
+
+    res.render('home', { 
+        title: 'Home', 
+        featuredVehicles 
+    });
 };
 
-export { homePage};
+export { homePage };

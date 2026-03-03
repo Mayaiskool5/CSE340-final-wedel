@@ -9,7 +9,7 @@ import { addLocalVariables } from './src/middleware/global.js';
 
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
-import { caCert } from './src/models/db.js';
+import { caCert, setupDatabase, testConnection } from './src/models/db.js';
 
 import { startSessionCleanup } from './src/utils/session-cleanup.js';
 
