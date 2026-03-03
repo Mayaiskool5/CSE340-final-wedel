@@ -8,6 +8,7 @@
         <p class="lead">Experience the joy of a premium car without the premium price tag!</p>
     </section>
 
+<<<<<<< HEAD
     <div class="featured-vehicles">
         <% if (featuredVehicles && featuredVehicles.length > 0) { %>
             <% featuredVehicles.forEach(vehicle => { %>
@@ -15,6 +16,18 @@
                     <h2><%= vehicle.make %> <%= vehicle.model %></h2>
                     <p><%= vehicle.description %></p>
                     <a href="/vehicles/<%= vehicle.slug %>">View Details</a>
+=======
+    <div class="row">
+        <% featuredVehicles.forEach(vehicle => { %>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="<%= vehicle.primary_image %>" class="card-img-top" alt="<%= vehicle.model %>">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h5>
+                        <p class="text-primary fw-bold">$<%= vehicle.price.toLocaleString() %></p>
+                        <a href="/vehicle/<%= vehicle.id %>" class="btn btn-outline-dark w-100">View Details</a>
+                    </div>
+>>>>>>> 597df13101fdd2f7494eadfd5e84aa35bab333a4
                 </div>
             <% }); %>
         <% } else { %>
