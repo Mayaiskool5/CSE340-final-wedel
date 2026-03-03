@@ -1,14 +1,12 @@
 html, body {
-    background-color: rgb(129, 236, 143);
+    background-color: rgb(8, 103, 21);
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
 }
 
 body {
-    &.blue-theme { background-color: #e3f2fd; }
-    &.green-theme { background-color: #e8f5e8; }
-    &.red-theme { background-color: #ffebee; }
+    background-color: #e8f5e8;
     nav {
         ul {
             list-style-type: none;

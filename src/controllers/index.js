@@ -17,6 +17,4 @@ const homePage = async (req, res) => {
     }
 };
 
-export default {
-    homePage
-};
+export { homePage };

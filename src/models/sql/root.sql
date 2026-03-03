@@ -51,6 +51,12 @@ BEGIN
     END IF;
 END $$;
 
+-- Organize the inventory (Trucks, SUVs, etc.).
+CREATE TABLE categories (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
+
 -- Vehicles table, Stores core inventory data with a reference to the category.
 CREATE TABLE vehicles (
     id SERIAL PRIMARY KEY,
@@ -61,15 +67,10 @@ CREATE TABLE vehicles (
     mileage INTEGER,
     specs JSONB, -- Flexible storage for engine, transmission, etc.
     description TEXT,
+    featured BOOLEAN DEFAULT FALSE,
     availability_status BOOLEAN DEFAULT TRUE,
     category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Organize the inventory (Trucks, SUVs, etc.).
-CREATE TABLE categories (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(50) UNIQUE NOT NULL
 );
 
 -- Links users to vehicles with a rating system.

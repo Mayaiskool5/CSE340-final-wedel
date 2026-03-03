@@ -17,26 +17,29 @@ const getVehicle = async (identifier, identifierType = 'id') => {
      * Aliases: f = vehicle, d = make (since we want the make name and code).
      */
     const query = `
-        SELECT f.id, f.name, f.make, f.model, f.year, 
-               f.title, f.gender, f.slug, d.name as make_name, d.code as make_code
+        SELECT f.*, c.name as category_name
         FROM vehicles f
-        JOIN makes d ON f.make_id = d.id
+        LEFT JOIN categories c ON f.category_id = c.id
         WHERE ${whereClause}
     `;
     
     const result = await db.query(query, [identifier]);
     
     // Return empty object if vehicle not found
-    if (result.rows.length === 0) return {};
+    if (result.rows.length === 0) return null; // Return null for 404 handling
     
-    const vehicle = result.rows[0];
+    const v = result.rows[0];
     return {
-        id: vehicle.id,
-        name: vehicle.name, // Computed full name (since we only have one name field in vehicles)
-        vehicle: vehicle.make_name,
-        vehicleCode: vehicle.make_code,
-        vin: vehicle.vin,
-        slug: vehicle.slug
+        id: v.id,
+        make: v.make,
+        model: v.model,
+        year: v.year,
+        price: v.price,
+        mileage: v.mileage,
+        specs: v.specs,
+        description: v.description,
+        category: v.category_name,
+        available: v.availability_status
     };
 };
 
@@ -65,13 +68,12 @@ const getSortedVehicle = async (sortBy = 'make') => {
     const result = await db.query(query);
     
     // Transform each row from database format to JavaScript format
-    return result.rows.map(vehicle => ({
-        id: vehicle.id,
-        name: vehicle.name,
-        vehicle: vehicle.vehicle,
-        vehicleCode: vehicle.vehicleCode,
-        vin: vehicle.vin,
-        slug: vehicle.slug
+    return result.rows.map(v => ({
+        id: v.id,
+        name: `${v.year} ${v.make_name} ${v.model}`,
+        price: v.price,
+        slug: v.slug,
+        image: v.image_path
     }));
 };
 
