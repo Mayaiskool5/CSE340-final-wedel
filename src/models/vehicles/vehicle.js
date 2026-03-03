@@ -39,7 +39,10 @@ const getVehicle = async (identifier, identifierType = 'id') => {
         specs: v.specs,
         description: v.description,
         category: v.category_name,
-        available: v.availability_status
+        available: v.availability_status,
+        image: v.image_url || '/images/no-image.jpg', 
+        slug: v.slug,
+        vehicleCode: v.vehicle_code
     };
 };
 

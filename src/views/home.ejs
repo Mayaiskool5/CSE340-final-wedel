@@ -1,4 +1,5 @@
 <%- include('partials/header') %>
+
 <link rel="stylesheet" href="/css/main.css">
 
 <main>
@@ -7,19 +8,19 @@
         <p class="lead">Experience the joy of a premium car without the premium price tag!</p>
     </section>
 
-    <div class="row">
-        <% featuredVehicles.forEach(car => { %>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="<%= car.primary_image %>" class="card-img-top" alt="<%= car.model %>">
-                    <div class="card-body">
-                        <h5 class="card-title"><%= car.year %> <%= car.make %> <%= car.model %></h5>
-                        <p class="text-primary fw-bold">$<%= car.price.toLocaleString() %></p>
-                        <a href="/vehicle/<%= car.id %>" class="btn btn-outline-dark w-100">View Details</a>
-                    </div>
+    <div class="featured-vehicles">
+        <% if (featuredVehicles && featuredVehicles.length > 0) { %>
+            <% featuredVehicles.forEach(vehicle => { %>
+                <div class="vehicle-card">
+                    <h2><%= vehicle.make %> <%= vehicle.model %></h2>
+                    <p><%= vehicle.description %></p>
+                    <a href="/vehicles/<%= vehicle.slug %>">View Details</a>
                 </div>
-            </div>
-        <% }) %>
+            <% }); %>
+        <% } else { %>
+            <p>No featured vehicles available at this time.</p>
+        <% } %>
     </div>
 </main>
+
 <%- include('partials/footer') %>

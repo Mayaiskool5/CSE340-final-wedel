@@ -20,6 +20,9 @@
     <% } %>
 
     <div class="vehicle-header">
+
+        <img src="<%= vehicle.image %>" alt="<%= vehicle.name %>" class="vehicle-image">
+
         <h1><%= vehicle.name %></h1>
         <p class="vehicle-meta"><%= vehicle.vehicleCode %> • <%= vehicle.year %> • <%= vehicle.make %> <%= vehicle.model %></p>
         <p class="vehicle-description"><%= vehicle.description %></p>

@@ -13,19 +13,28 @@ const vehicleListPage = async (req, res) => {
 };
 
 const vehicleDetailPage = async (req, res, next) => {
-    const vehicleSlug = req.params.vehicleSlug;
-    const vehicleMember = await getVehicleBySlug(vehicleSlug);
+    try{
+        const vehicleSlug = req.params.slugId;
+        const vehicleMember = await getVehicleBySlug(vehicleSlug);
 
-    if (Object.keys(vehicleMember).length === 0) {
-        const err = new Error(`Vehicle member ${vehicleSlug} not found`);
-        err.status = 404;
-        return next(err);
+        if (!vehicleMember) {
+            const err = new Error(`Vehicle member ${vehicleSlug} not found`);
+            err.status = 404;
+            return next(err);
+        }
+
+        res.render('vehicles/detail', {
+            title: `${vehicleMember.make} ${vehicleMember.model} - Vehicle Profile`,
+            vehicle: vehicleMember,
+            sections: [],
+            queryParams: req.query,
+            currentSort: req.query.sort || 'year'
+        });
+
+    } catch (error) {
+        console.error("Error in vehicleDetailPage:", error);
+        next(error); 
     }
-
-    res.render('vehicles/detail', {
-        title: `${vehicleMember.name} - Vehicle Profile`,
-        member: vehicleMember
-    });
 };
 
 export { vehicleListPage, vehicleDetailPage};
