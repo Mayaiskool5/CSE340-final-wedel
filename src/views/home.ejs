@@ -8,14 +8,14 @@
     </section>
 
     <div class="row">
-        <% featuredVehicles.forEach(car => { %>
+        <% featuredVehicles.forEach(vehicle => { %>
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
-                    <img src="<%= car.primary_image %>" class="card-img-top" alt="<%= car.model %>">
+                    <img src="<%= vehicle.primary_image %>" class="card-img-top" alt="<%= vehicle.model %>">
                     <div class="card-body">
-                        <h5 class="card-title"><%= car.year %> <%= car.make %> <%= car.model %></h5>
-                        <p class="text-primary fw-bold">$<%= car.price.toLocaleString() %></p>
-                        <a href="/vehicle/<%= car.id %>" class="btn btn-outline-dark w-100">View Details</a>
+                        <h5 class="card-title"><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h5>
+                        <p class="text-primary fw-bold">$<%= vehicle.price.toLocaleString() %></p>
+                        <a href="/vehicle/<%= vehicle.id %>" class="btn btn-outline-dark w-100">View Details</a>
                     </div>
                 </div>
             </div>

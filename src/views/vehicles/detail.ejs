@@ -9,16 +9,13 @@
     <div class="vehicle-detail">
         <img 
             src="/images/vehicles/<%= vehicle.slug %>.jpg" 
-            alt="Photo of <%= vehicle.name %>" 
+            alt="Photo of <%= vehicle.make %> <%= vehicle.model %>" 
             class="vehicle-detail-photo"
         >
-        <h1><%= vehicle.name %></h1>
-        <p><strong>Title:</strong> <%= vehicle.title %></p>
-        <p><strong>Department:</strong> <%= vehicle.department %></p>
-        <h2>Contact Information</h2>
-        <p><strong>Office:</strong> <%= vehicle.office %></p>
-        <p><strong>Phone:</strong> <%= vehicle.phone %></p>
-        <p><strong>Email:</strong> <a href="mailto:<%= vehicle.email %>"><%= vehicle.email %></a></p>
+        <h1><%= vehicle.make %> <%= vehicle.model %></h1>
+        <p><strong>Year:</strong> <%= vehicle.year %></p>
+        <p><strong>Department:</strong> <%= vehicle.category_id %></p>
+        <p><strong>Price:</strong> <%= vehicle.price %></p>
     </div>
 
     <div class="navigation">
