@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="/css/main.css">
 
 <main>
-    <% if (Object.keys(queryParams).length > 0) { %>
+    <% if (typeof queryParams !== 'undefined' && Object.keys(queryParams).length 
         <div class="sort-message">
             <p>Query parameters: <%= JSON.stringify(queryParams) %></p>
         <% if (queryParams.sort) { %>
@@ -49,6 +49,41 @@
             <% }); %>
         </div>
     </div>
+
+    <section class="add-review">
+    <hr>
+    <h3>Leave a Review</h3>
+
+    <% if (locals.user) { %>
+        <!-- FORM FOR LOGGED-IN USERS -->
+        <form action="/reviews/add" method="POST" class="review-form">
+            <input type="hidden" name="vehicle_id" value="<%= vehicle.id %>">
+            <input type="hidden" name="vehicle_slug" value="<%= vehicle.slug %>">
+            
+            <div class="form-group">
+                <label for="review_rating">Rating (1-5):</label>
+                <select name="review_rating" id="review_rating" required>
+                    <option value="5">5 Stars - Excellent</option>
+                    <option value="4">4 Stars - Very Good</option>
+                    <option value="3">3 Stars - Good</option>
+                    <option value="2">2 Stars - Fair</option>
+                    <option value="1">1 Star - Poor</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="review_text">Your Review:</label>
+                <textarea name="review_text" id="review_text" rows="4" placeholder="Share your experience with this <%= vehicle.make %>..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary">Submit Review</button>
+        </form>
+    <% } else { %>
+        <div class="login-notice">
+            <p>You must be <a href="/login">logged in</a> to leave a review.</p>
+        </div>
+    <% } %>
+</section>
 
     <div class="navigation">
         <p><a href="/catalog">&larr; Back to Vehicle Catalog</a></p>

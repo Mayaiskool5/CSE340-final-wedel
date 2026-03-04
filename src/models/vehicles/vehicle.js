@@ -17,9 +17,13 @@ const getVehicle = async (identifier, identifierType = 'id') => {
      * Aliases: f = vehicle, d = make (since we want the make name and code).
      */
     const query = `
-        SELECT f.*, c.name as category_name
+        SELECT f.*, 
+            c.name as category_name, 
+            i.image_url
         FROM vehicles f
         LEFT JOIN categories c ON f.category_id = c.id
+        -- JOIN the images table to get the PRIMARY photo
+        LEFT JOIN vehicle_images i ON f.id = i.vehicle_id AND i.is_primary = true
         WHERE ${whereClause}
     `;
     

@@ -15,5 +15,24 @@
             </div>
         <% }); %>
     </div>
+
+    <div class="review-card">
+        <strong><%= review.first_name %> <%= review.last_name %></strong>
+        <span>Rating: <%= '★'.repeat(review.review_rating) %></span>
+        <p><%= review.review_text %></p>
+        <small><%= new Date(review.review_date).toLocaleDateString() %></small>
+
+        <!-- ONLY SHOW BUTTONS IF USER OWNS THE REVIEW -->
+        <% if (locals.user && locals.user.id === review.user_id) { %>
+            <div class="review-actions">
+                <a href="/reviews/edit/<%= review.id %>" class="btn-edit">Edit</a>
+                <form action="/reviews/delete" method="POST" style="display:inline;">
+                    <input type="hidden" name="review_id" value="<%= review.id %>">
+                    <input type="hidden" name="vehicle_slug" value="<%= vehicle.slug %>">
+                    <button type="submit" class="btn-delete" onclick="return confirm('Delete this review?')">Delete</button>
+                </form>
+            </div>
+        <% } %>
+    </div>
 </main>
 <%- include('../partials/footer') %>

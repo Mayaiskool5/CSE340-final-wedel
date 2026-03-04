@@ -1,5 +1,5 @@
 /* Vehicle catalog styles using native CSS nesting */
-.vehicle-list {
+.vehicle-card {
     display: grid;
     gap: 1.5rem;
     max-width: 800px;

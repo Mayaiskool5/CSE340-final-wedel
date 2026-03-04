@@ -5,6 +5,7 @@ import { vehicleListPage } from './vehicles/vehicle.js';
 import contactRoutes, { handleContactSubmission } from './forms/contact.js';
 import loginRoutes, { processLogin, processLogout, showDashboard } from './forms/login.js';
 import { requireLogin } from '../middleware/auth.js';
+import { processReview } from '../controllers/reviews-controller.js';
 import { 
     showRegistrationForm, 
     processRegistration, 
@@ -52,6 +53,8 @@ router.post('/register', registrationValidation, processRegistration);
 
 // User List
 router.get('/register/list', requireLogin, showAllUsers);
+
+router.post('/reviews/add', requireLogin, processReview);
 
 // Edit Account (GET and POST)
 router.get('/register/:id/edit', showEditAccountForm);

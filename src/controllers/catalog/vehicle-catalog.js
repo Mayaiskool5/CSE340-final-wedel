@@ -1,5 +1,6 @@
 import { getAllVehicles, getVehiclesBySlug } from '../../models/catalog/vehicle-catalog.js';
 import { getSectionsByVehicleSlug } from '../../models/catalog/vehicle-catalog.js';
+import { getReviewsByVehicleId } from '../../models/catalog/reviews-model.js';
 
 // Route handler for the course catalog list page
 const vehicleCatalogPage = async (req, res) => {
@@ -13,28 +14,36 @@ const vehicleCatalogPage = async (req, res) => {
 
 // Route handler for individual vehicle detail pages
 const vehicleDetailPage = async (req, res, next) => {
-    const vehicleSlug = req.params.slugId;
-    const vehicle = await getVehiclesBySlug(vehicleSlug);
+    try {
+        const vehicleSlug = req.params.slugId;
+        
+        // 1. Fetch the main vehicle data
+        const vehicleData = await getVehiclesBySlug(vehicleSlug);
 
-    // Our model returns empty object {} when not found, not null
-    // Check if the object is empty using Object.keys()
-    if (Object.keys(vehicle).length === 0) {
-        const err = new Error(`Vehicle ${vehicleSlug} not found`);
-        err.status = 404;
-        return next(err);
+        // 2. Check if the object is empty (per your model's design)
+        if (!vehicleData || Object.keys(vehicleData).length === 0) {
+            return next(new Error("Vehicle not found"));
+        }
+
+        // 1. Fetch related data in parallel for speed
+        const [sections, reviews] = await Promise.all([
+            getSectionsByVehicleSlug(vehicleSlug, req.query.sort || 'year_desc'),
+            getReviewsByVehicleId(vehicleData.id) // Fetch reviews using vehicle ID
+        ]);
+
+        // 2. Render everything to the view
+        res.render('catalog/detail', {
+            title: `${vehicleData.make} ${vehicleData.model}`,
+            vehicle: vehicleData,
+            sections: sections,
+            reviews: reviews, // Pass reviews to the EJS
+            currentSort: req.query.sort || 'year_desc',
+            queryParams: req.query
+        });
+
+    } catch (error) {
+        next(error);
     }
-    
-    // Get sections (course offerings) separately from the catalog
-    // Pass the sortBy parameter directly to the model - PostgreSQL handles the sorting
-    const sortBy = req.query.sort || 'year_desc'; // Default sorting by year descending
-    const sections = await getSectionsByVehicleSlug(vehicleSlug, sortBy);
-    
-    res.render('catalog/detail', {
-        title: `${vehicle.vehicle.code} - ${vehicle.vehicle.name}`,
-        vehicle: vehicle,
-        sections: sections,
-        currentSort: sortBy
-    });
 };
 
 export { vehicleCatalogPage, 
