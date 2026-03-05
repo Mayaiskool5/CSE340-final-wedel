@@ -37,11 +37,15 @@ router.use('/contact', (req, res, next) => {
     next();
 });
 
-// Define the POST handler specifically for /contact with validation first
+// GET the form
+router.get('/contact', contactRoutes.showContactForm);
+
+// POST the form (with validation)
 router.post('/contact', contactValidation, handleContactSubmission);
 
-// Contact form routes
-router.use('/contact', contactRoutes);
+// --- Staff Contact Routes ---
+// Only Employees and Owners can see the submissions
+router.get('/contact/responses', requireRole(['employee', 'owner']), showContactResponses);
 
 router.use('/register', (req, res, next) => {
     res.addStyle('<link rel="stylesheet" href="/css/registration.css">');

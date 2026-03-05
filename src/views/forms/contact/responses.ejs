@@ -1,20 +1,31 @@
 <%- include('../../partials/header') %>
-<link rel="stylesheet" href="/css/main.css">
-<main>
+<main class="responses-container">
     <h1>Contact Form Submissions</h1>
 
     <% if (contactForms && contactForms.length > 0) { %>
         <div class="contact-responses">
             <% contactForms.forEach(form => { %>
-                <div class="response-item">
-                    <h3 class="response-subject"><%= form.subject %></h3>
+                <div class="response-item shadow-sm border p-3 mb-3 bg-white rounded">
+                    <div class="d-flex justify-content-between">
+                        <h3 class="response-subject text-primary"><%= form.subject %></h3>
+                        <span class="text-muted small">
+                            <%= new Date(form.created_at).toLocaleDateString() %>
+                        </span>
+                    </div>
+                    
+                    <p class="mb-1"><strong>From:</strong> <%= form.name %> (<%= form.email %>)</p>
+                    <hr>
                     <p class="response-message"><%= form.message %></p>
-                    <p class="response-date">Submitted: <%= new Date(form.submitted).toLocaleDateString() %></p>
+                    
+                    <!-- Programming Tip: Add a mailto link for quick employee response -->
+                    <a href="mailto:<%= form.email %>?subject=Re: <%= form.subject %>" class="btn btn-sm btn-outline-primary">
+                        Reply via Email
+                    </a>
                 </div>
             <% }); %>
         </div>
     <% } else { %>
-        <p class="no-responses">No contact form submissions yet.</p>
+        <div class="alert alert-info">No contact form submissions yet.</div>
     <% } %>
 </main>
 <%- include('../../partials/footer') %>

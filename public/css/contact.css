@@ -1,106 +1,85 @@
 /* Contact Form Styles */
-.contact-form {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 2rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fff;
 
-    h2 {
-        color: #2c5aa0;
-        border-bottom: 2px solid #2c5aa0;
-        padding-bottom: 0.5rem;
-        margin: 0 0 1.5rem 0;
-        text-align: center;
-    }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #333;
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: border-color 0.3s ease;
-
-            &:focus {
-                outline: none;
-                border-color: #2c5aa0;
-            }
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 150px;
-        }
-    }
-
-    button[type="submit"] {
-        width: 100%;
-        padding: 1rem;
-        background-color: #0e7013;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-size: 1rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-
-        &:hover {
-            background-color: #23aa2a;
-        }
-    }
+/* Shared Layout Container */
+.responses-container, .contact-form-container {
+    max-width: 900px; 
+    margin: 2rem auto; 
+    padding: 0 1rem;
 }
 
-/* Contact Responses Styles */
-.contact-responses {
-    max-width: 800px;
-    margin: 2rem auto;
+/* Public Contact Form Styling */
+.styled-form { 
+    background: #ffffff; 
+    padding: 2rem; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+}
 
-    .response-item {
-        background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
+.form-group {
+    margin-bottom: 1.5rem; 
+}
 
-        .response-subject {
-            color: #07470a;
-            margin: 0 0 1rem 0;
-            font-size: 1.25rem;
-        }
+.form-group label { 
+    display: block; 
+    font-weight: 600; 
+    margin-bottom: 0.5rem; 
+    color: #333; 
+}
 
-        .response-message {
-            color: #333;
-            line-height: 1.6;
-            margin: 0 0 1rem 0;
-            white-space: pre-wrap;
-        }
+.form-group input, .form-group textarea { 
+    width: 100%; 
+    padding: 0.8rem; 
+    border: 1px solid #ddd; 
+    border-radius: 4px; 
+    box-sizing: border-box; 
+}
 
-        .response-date {
-            color: #666;
-            font-size: 0.875rem;
-            margin: 0;
-        }
-    }
+.form-group textarea { 
+    resize: vertical; 
+    min-height: 120px; 
+}
 
-    .no-responses {
-        text-align: center;
-        color: #666;
-        font-style: italic;
-        padding: 2rem;
-    }
+/* Employee Responses (Dashboard) Styling */
+.response-item { 
+    background: #fdfdfd; 
+    border-left: 5px solid #99e89d; 
+    padding: 1.5rem; 
+    margin-bottom: 1.5rem; 
+    border-radius: 4px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+}
+
+.response-header { 
+    display: flex; 
+    justify-content: space-between; 
+    border-bottom: 1px solid #eee; 
+    padding-bottom: 0.5rem; 
+}
+
+.response-message { 
+    line-height: 1.6; 
+    white-space: pre-wrap; 
+}
+
+/* Alert/Flash Messages & Buttons */
+.alert { 
+    padding: 1rem; 
+    border-radius: 4px; 
+    margin-bottom: 1rem; 
+}
+
+.alert-success { 
+    background: #d4edda; 
+    color: #155724; 
+}
+
+.btn-submit { 
+    background-color: #0e7013; 
+    color: white; 
+    padding: 0.8rem 2rem; 
+    border: none; cursor: pointer; 
+}
+
+.btn-submit:hover { 
+    background-color: #23aa2a; 
 }

@@ -12,16 +12,32 @@ const showAddVehicleForm = async (req, res) => {
 // Process adding the vehicle
 const processAddVehicle = async (req, res, next) => {
     try {
-        // Generate a slug if one isn't provided (e.g., 2024-ford-f150)
-        req.body.slug = `${req.body.year}-${req.body.make}-${req.body.model}`.toLowerCase().replace(/ /g, '-');
-        
-        await vehicleModel.createVehicle(req.body);
-        req.flash('success', 'Vehicle added to inventory!');
-        res.redirect('/vehicle'); // Redirect to the directory
+        const { make, model, year, price, mileage, description, category_id } = req.body;
+
+        // Bundle specs into a JSON object for the JSONB column
+        const specs = {
+            engine: req.body.spec_engine,
+            transmission: req.body.spec_trans,
+            fuel: req.body.spec_fuel
+        };
+
+        // Generate a clean URL slug
+        const slug = `${year}-${make}-${model}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+        // Save to database via model
+        await vehicleModel.createVehicle({
+            make, model, year, price, mileage, 
+            description, category_id, specs, slug
+        });
+
+        req.flash('success', `${year} ${make} ${model} added successfully.`);
+        res.redirect('/vehicle');
     } catch (error) {
+        console.error("Error adding vehicle:", error);
         next(error);
     }
 };
+
 
 // Handle deletion
 const processDeleteVehicle = async (req, res, next) => {
