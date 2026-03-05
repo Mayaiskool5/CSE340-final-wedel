@@ -1,0 +1,49 @@
+<%- include('../partials/header') %>
+
+<main class="admin-container">
+    <h1>Service Management Queue</h1>
+    
+    <div class="card shadow-sm">
+        <table class="service-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Vehicle & Service</th>
+                    <th>Update Status</th>
+                    <th>Internal Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% requests.forEach(req => { %>
+                    <tr>
+                        <td>#<%= req.id %></td>
+                        <td>
+                            <strong><%= req.customer_name %></strong><br>
+                            <small><%= req.customer_email %></small>
+                        </td>
+                        <td>
+                            <%= req.vehicle_info %><br>
+                            <span class="badge bg-secondary"><%= req.service_type %></span>
+                        </td>
+                        <td>
+                            <form action="/services/update" method="POST" class="update-form">
+                                <input type="hidden" name="requestId" value="<%= req.id %>">
+                                <select name="status" class="status-select">
+                                    <option value="Submitted" <%= req.status === 'Submitted' ? 'selected' : '' %>>Submitted</option>
+                                    <option value="In Progress" <%= req.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+                                    <option value="Completed" <%= req.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+                                </select>
+                        </td>
+                        <td>
+                                <textarea name="notes" placeholder="Add notes..."><%= req.employee_notes %></textarea>
+                                <button type="submit" class="btn-save">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</main>
+<%- include('../partials/footer') %>

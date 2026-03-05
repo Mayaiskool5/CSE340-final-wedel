@@ -56,11 +56,35 @@ const getVehiclesByCategory = async (categoryName) => {
     return result.rows;
 };
 
+/**
+ * Create a new vehicle in the inventory.
+ */
+const createVehicle = async (data) => {
+    const { make, model, year, price, mileage, specs, description, category_id, slug } = data;
+    const query = `
+        INSERT INTO vehicles (make, model, year, price, mileage, specs, description, category_id, slug)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        RETURNING id
+    `;
+    const result = await db.query(query, [make, model, year, price, mileage, specs, description, category_id, slug]);
+    return result.rows[0];
+};
+
+/**
+ * Delete a vehicle and its associated images (via CASCADE).
+ */
+const deleteVehicle = async (id) => {
+    return await db.query('DELETE FROM vehicles WHERE id = $1', [id]);
+};
+
+
 const getVehicleById = (id) => getVehicle(id, 'id');
 const getVehicleBySlug = (slug) => getVehicle(slug, 'slug');
 
 export { 
     getVehicleById, 
     getVehicleBySlug, 
-    getVehiclesByCategory 
+    getVehiclesByCategory,
+    createVehicle,
+    deleteVehicle
 };

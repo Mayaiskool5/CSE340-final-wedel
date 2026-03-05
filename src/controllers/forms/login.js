@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator';
 import { findUserByEmail, verifyPassword } from '../../models/forms/login.js';
 import { Router } from 'express';
+import { getRequestsByUser } from '../../models/service/service.js';
 
 const router = Router();
 
@@ -126,29 +127,34 @@ const processLogout = (req, res) => {
     });
 };
 
-/**
- * Display protected dashboard (requires login).
- */
-const showDashboard = (req, res) => {
-    const user = req.session.user;
-    const sessionData = req.session;
+//Display protected dashboard with user info and service history.
+const showDashboard = async (req, res, next) => {
+    try {
+        const user = req.session.user;
 
-    // Security check! Ensure user and sessionData do not contain password field
-    if (user && user.password) {
-        console.error('Security error: password found in user object');
-        delete user.password;
-    }
-    if (sessionData.user && sessionData.user.password) {
-        console.error('Security error: password found in sessionData.user');
-        delete sessionData.user.password;
-    }
+        // 1. Fetch service history specifically for the logged-in customer
+        // If the user is an employee/owner, this will return an empty array or 
+        // you could fetch all pending requests instead.
+        let serviceHistory = [];
+        if (user.roleName === 'customer') {
+            serviceHistory = await getRequestsByUser(user.id);
+        }
 
-    res.render('dashboard', {
-        title: 'Dashboard',
-        user,
-        sessionData
-    });
+        // 2. Render the dashboard with the combined data
+        res.render('dashboard', {
+            title: 'Dashboard',
+            user,
+            serviceHistory, // This variable is now available in your EJS
+            sessionData: req.session
+        });
+
+    } catch (error) {
+        console.error("Error loading dashboard data:", error);
+        // Pass error to global error handler
+        next(error); 
+    }
 };
+
 
 // Routes
 router.get('/', showLoginForm);

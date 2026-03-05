@@ -24,7 +24,10 @@ import {
     editValidation,
     contactValidation 
 } from '../middleware/validation/forms.js';
-// Import ValidationRules form Middleware
+
+import { requireRole } from '../../middleware/auth.js';
+import * as serviceCtrl from '../service/service.js';
+import * as ownerCtrl from './vehicles/ownerController.js';
 
 const router = Router();
 
@@ -79,12 +82,36 @@ router.use('/register', editValidation);
 
 // Authentication-related routes at root level
 router.get('/logout', processLogout);
+
+router.use('/dashboard', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/dashboard.css">');
+    next();
+});
+
 router.get('/dashboard', requireLogin, showDashboard);
 
 // Home page
 router.get('/', homePage);
 
+// Service Routes:
+// Customer: show form and submit request
+router.get('/service/service', requireRole('customer'), serviceCtrl.showServiceForm);
+router.post('/service/service', requireRole('customer'), serviceCtrl.submitServiceRequest);
+
+// Owner/Employee: manage all requests
+router.get('/services/manage', requireRole(['employee', 'owner']), serviceCtrl.manageAllRequests);
+router.post('/services/update', requireRole(['employee', 'owner']), serviceCtrl.updateServiceStatus);
+
+//Owner Only: Add vehicle
+router.get('/admin/inventory/add', requireRole('owner'), ownerCtrl.showAddVehicleForm);
+router.post('/admin/inventory/add', requireRole('owner'), ownerCtrl.processAddVehicle);
+
+// Delete Vehicle (Usually triggered by a button in the vehicle list)
+router.post('/admin/inventory/delete/:id', requireRole('owner'), ownerCtrl.processDeleteVehicle);
+
+
 // Vehicle catalog routes
+router.get('/catalog', vehicleCatalogPage);
 router.get('/browse/:category?', vehicleListPage);
 router.get('/vehicle/:slugId', vehicleDetailPage);
 

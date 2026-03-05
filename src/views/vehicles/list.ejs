@@ -13,6 +13,11 @@
                 <h3><a href="/vehicles/<%= vehicle.slug %>"><%= vehicle.name %></a></h3>
                 <p><strong><%= vehicle.name %></strong></p>
                 <p><%= vehicle.department %></p>
+                <% if (user && user.roleName === 'owner') { %>
+                    <form action="/admin/inventory/delete/<%= vehicle.id %>" method="POST">
+                        <button type="submit" class="btn-delete" onclick="return confirm('Delete this vehicle?')">Delete</button>
+                    </form>
+                <% } %>
             </div>
         <% }) %>
     </div>

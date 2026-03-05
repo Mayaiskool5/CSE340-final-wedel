@@ -1,0 +1,49 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0"><%= title %></h2>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Fill out the form below to request maintenance for your vehicle.</p>
+                    
+                    <form action="/service/service" method="POST">
+                        <!-- Service Type Selection -->
+                        <div class="mb-3">
+                            <label for="service_type" class="form-label">Service Needed</label>
+                            <select class="form-select" id="service_type" name="service_type" required>
+                                <option value="" selected disabled>Choose a service...</option>
+                                <option value="Oil Change">Oil Change</option>
+                                <option value="Tire Rotation">Tire Rotation</option>
+                                <option value="Brake Inspection">Brake Inspection</option>
+                                <option value="General Maintenance">General Maintenance</option>
+                                <option value="Other">Other (specify in notes)</option>
+                            </select>
+                        </div>
+
+                        <!-- Vehicle Description -->
+                        <div class="mb-3">
+                            <label for="vehicle_info" class="form-label">Vehicle Information</label>
+                            <input type="text" class="form-control" id="vehicle_info" name="vehicle_info" 
+                                   placeholder="e.g., 2018 Ford F-150 Blue" required>
+                            <div class="form-text">Provide the Year, Make, and Model.</div>
+                        </div>
+
+                        <!-- Optional: Link to Inventory ID (hidden or handled by JS later) -->
+                        <input type="hidden" name="inventory_vehicle_id" value="">
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="/dashboard" class="btn btn-secondary me-md-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,36 +1,55 @@
 <%- include('partials/header') %>
 <main>
-    <div class="dashboard">
-        <h1>Welcome to Your Dashboard</h1>
-        <p>
-            This is a protected page that requires authentication. Only logged-in users can access this content.
-        </p>
-
-        <div class="user-info">
-            <h2>Your Account Information</h2>
-            <!-- User Name -->
-            <div class="user-detail">
-                <span class="label">Name:</span>
-                <span class="value"><%= user.name %></span>
+    <div class="dashboard-container">
+        <!-- Account Column -->
+        <section class="account-sidebar">
+            <div class="card p-3">
+                <h2>Account Details</h2>
+                <p><strong>Name:</strong> <%= user.name %></p>
+                <p><strong>Email:</strong> <%= user.email %></p>
+                <p><strong>Role:</strong> <%= user.roleName %></p>
+                <a href="/logout" class="logout-button">Logout</a>
             </div>
+        </section>
 
-            <!-- User Email -->
-            <div class="user-detail">
-                <span class="label">Email:</span>
-                <span class="value"><%= user.email %></span>
-            </div>
-
-            <!-- User Role: FOR TESTING ONLY-->
-            <div class="user-detail">
-                <span class="label">Role:</span>
-                <span class="value"><%= user.roleName %></span>
-            </div>
-            
-        </div>
-
-        <div class="dashboard-actions">
-            <a href="/logout" class="logout-button">Logout</a>
-        </div>
+        <!-- Service History Column -->
+        <section class="history-main">
+            <% if (user.roleName === 'customer') { %>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>My Service History</h3>
+                        <a href="/service/service" class="btn-action">Book Service</a>
+                    </div>
+                    
+                    <% if (typeof serviceHistory !== 'undefined' && serviceHistory.length > 0) { %>
+                        <table class="service-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Vehicle</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% serviceHistory.forEach(request => { %>
+                                    <tr>
+                                        <td><%= new Date(request.created_at).toLocaleDateString() %></td>
+                                        <td><%= request.vehicle_info %></td>
+                                        <td>
+                                            <span class="status-badge status-<%= request.status.toLowerCase().replace(' ', '-') %>">
+                                                <%= request.status %>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <p class="p-3">No service records found.</p>
+                    <% } %>
+                </div>
+            <% } %>
+        </section>
     </div>
 </main>
 <%- include('partials/footer') %>
