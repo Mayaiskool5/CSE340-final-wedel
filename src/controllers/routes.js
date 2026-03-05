@@ -85,8 +85,8 @@ router.get('/dashboard', requireLogin, showDashboard);
 router.get('/', homePage);
 
 // Vehicle catalog routes
-router.get('/vehicle-catalog', vehicleCatalogPage);
-router.get('/vehicles/:slugId', vehicleDetailPage);
+router.get('/browse/:category?', vehicleListPage);
+router.get('/vehicle/:slugId', vehicleDetailPage);
 
 // Vehicle directory routes
 router.get('/vehicle', vehicleListPage);

@@ -33,20 +33,21 @@ END $$;
 -- Seed roles (safe to run multiple times)
 INSERT INTO roles (role_name, role_description) 
 VALUES 
-    ('user', 'Standard user with basic access'),
-    ('admin', 'Administrator with full system access')
+    ('customer', 'A client who browses vehicles and requests service'),
+    ('employee', 'Staff member who manages inventory and service status'),
+    ('owner', 'Business owner with full control over staff and categories')
 ON CONFLICT (role_name) DO NOTHING;
 
 -- Update existing users without a role to default 'user' role
 DO $$
 DECLARE
-    user_role_id INTEGER;
+    customer_role_id INTEGER;
 BEGIN
-    SELECT id INTO user_role_id FROM roles WHERE role_name = 'user';
+    SELECT id INTO customer_role_id FROM roles WHERE role_name = 'customer';
 
-    IF user_role_id IS NOT NULL THEN
+    IF customer_role_id IS NOT NULL THEN
         UPDATE users 
-        SET role_id = user_role_id 
+        SET role_id = customer_role_id 
         WHERE role_id IS NULL;
     END IF;
 END $$;
@@ -84,17 +85,38 @@ CREATE TABLE reviews (
 );
 
 -- Tracks maintenance requests from submission to completion.
-CREATE TYPE request_status AS ENUM ('Submitted', 'In Progress', 'Completed');
+-- Create the update function for timestamps if it doesn't exist
+CREATE OR REPLACE FUNCTION update_modified_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Drop and recreate service_requests with better vehicle tracking
+DROP TABLE IF EXISTS service_requests;
 
 CREATE TABLE service_requests (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    service_type VARCHAR(100) NOT NULL, -- example = 'Oil Change'
+    -- Allows users to service cars not in the dealership inventory
+    vehicle_info TEXT NOT NULL, 
+    -- Optional link if they bought it from the lot
+    inventory_vehicle_id INTEGER REFERENCES vehicles(id) ON DELETE SET NULL,
+    service_type VARCHAR(100) NOT NULL,
     status request_status DEFAULT 'Submitted',
     employee_notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Apply the auto-update trigger
+CREATE TRIGGER update_service_request_modtime
+    BEFORE UPDATE ON service_requests
+    FOR EACH ROW
+    EXECUTE PROCEDURE update_modified_column();
+
 
 --Gets leads from the public contact form
 CREATE TABLE contact_messages (
