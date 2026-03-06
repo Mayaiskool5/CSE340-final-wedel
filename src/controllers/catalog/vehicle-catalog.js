@@ -1,16 +1,35 @@
 import { getAllVehicles, getVehiclesBySlug } from '../../models/catalog/vehicle-catalog.js';
 import { getSectionsByVehicleSlug } from '../../models/catalog/vehicle-catalog.js';
-import { getReviewsByVehicleId } from '../../models/catalog/reviews-model.js';
+import { getReviewsByVehicleId } from '../../models/catalog/reviews.js';
 
 // Route handler for the course catalog list page
-const vehicleCatalogPage = async (req, res) => {
-    const vehicles = await getAllVehicles();
+// src/controllers/catalog/vehicle-catalog.js
 
-    res.render('catalog/list', {
-        title: 'Vehicle Catalog',
-        vehicles: vehicles
-    });
+const vehicleCatalogPage = async (req, res) => {
+    try {
+        const { category, featured } = req.query; // Check for ?category=Trucks or ?featured=true
+        
+        let vehicles;
+        if (featured === 'true') {
+            // Fetch only featured vehicles for the Home Page
+            vehicles = await getAllVehicles({ featured: true, limit: 4 });
+        } else if (category) {
+            // Fetch vehicles by category for the Browse page
+            vehicles = await getAllVehicles({ category });
+        } else {
+            vehicles = await getAllVehicles();
+        }
+
+        res.render('catalog/list', {
+            title: category ? `${category} Inventory` : 'Vehicle Catalog',
+            vehicles: vehicles,
+            currentCategory: category || 'All'
+        });
+    } catch (error) {
+        res.status(500).send("Error loading catalog");
+    }
 };
+
 
 // Route handler for individual vehicle detail pages
 const vehicleDetailPage = async (req, res, next) => {

@@ -29,6 +29,9 @@ const processAddVehicle = async (req, res, next) => {
             make, model, year, price, mileage, 
             description, category_id, specs, slug
         });
+        
+        await logActivity(
+            req, 'ADD_VEHICLE', `Owner added ${req.body.year} ${req.body.make}`);
 
         req.flash('success', `${year} ${make} ${model} added successfully.`);
         res.redirect('/vehicle');
@@ -50,8 +53,22 @@ const processDeleteVehicle = async (req, res, next) => {
     }
 };
 
+const showActivityLogs = async (req, res, next) => {
+    try {
+        const result = await db.query(`
+            SELECT a.*, u.name as user_name 
+            FROM activity_logs a 
+            LEFT JOIN users u ON a.user_id = u.id 
+            ORDER BY a.created_at DESC LIMIT 100
+        `);
+        res.render('admin/activity-logs', { title: 'System Activity', logs: result.rows });
+    } catch (error) { next(error); }
+};
+
+
 export {
     showAddVehicleForm,
     processAddVehicle,
-    processDeleteVehicle
+    processDeleteVehicle,
+    showActivityLogs
 }

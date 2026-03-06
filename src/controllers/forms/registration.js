@@ -1,20 +1,13 @@
-import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import { emailExists, saveUser, getAllUsers, getUserById, updateUser, deleteUser } from '../../models/forms/registration.js';
 import { validationResult } from 'express-validator';
 
-const router = Router();
-
-/**
- * Display the registration form page.
- */
+//Display the registration form page
 const showRegistrationForm = (req, res) => {
     res.render('forms/registration/form', { title: 'User Registration'});
 };
 
-/**
- * Handle user registration with validation and password hashing.
- */
+// User registration with validation and password hashing
 const processRegistration = async (req, res) => {
     // Check for validation errors
     const errors = validationResult(req);
@@ -58,9 +51,7 @@ const processRegistration = async (req, res) => {
     }
 };
 
-/**
- * Display all registered users.
- */
+// Display all registered users
 const showAllUsers = async (req, res) => {
     let users = [];
     try {
@@ -75,10 +66,7 @@ const showAllUsers = async (req, res) => {
     });
 };
 
-/**
- * Display the edit account form
- * Users can edit their own account, admins can edit any account
- */
+// Edit account, Users can edit their own account, admins can edit any account
 const showEditAccountForm = async (req, res) => {
     const targetUserId = parseInt(req.params.id);
     const currentUser = req.session.user;
@@ -104,9 +92,7 @@ const showEditAccountForm = async (req, res) => {
     });
 };
 
-/**
- * Process account edit form submission
- */
+// Process account edit form submission
 const processEditAccount = async (req, res) => {
     const errors = validationResult(req);
 
@@ -162,10 +148,7 @@ const processEditAccount = async (req, res) => {
     }
 };
 
-/**
- * Process account deletion
- * Only admins can delete accounts, and they cannot delete themselves
- */
+// Account deletion, Only admins can delete acconunts, they cannot delete themselves
 const processDeleteAccount = async (req, res) => {
     const targetUserId = parseInt(req.params.id);
     const currentUser = req.session.user;

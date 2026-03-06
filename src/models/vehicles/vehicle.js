@@ -50,6 +50,26 @@ const getVehiclesByCategory = async (categoryName) => {
     return result.rows;
 };
 
+// Get all available vehicles with sorting
+const getSortedVehicle = async (sortBy = 'make') => {
+    // Basic sorting logic
+    const orderBy = sortBy === 'price' ? 'v.price DESC' : 
+                    sortBy === 'year' ? 'v.year DESC' : 
+                    'v.make ASC';
+
+    const query = `
+        SELECT v.*, i.image_url
+        FROM vehicles v
+        LEFT JOIN vehicle_images i ON v.id = i.vehicle_id AND i.is_primary = true
+        WHERE v.availability_status = true
+        ORDER BY ${orderBy}
+    `;
+    
+    const result = await db.query(query);
+    return result.rows;
+};
+
+
 // Create a new vehicle in the inventory
 const createVehicle = async (data) => {
     const { make, model, year, price, mileage, specs, description, category_id, slug } = data;
@@ -89,6 +109,7 @@ export {
     getVehicleById, 
     getVehicleBySlug, 
     getVehiclesByCategory,
+    getSortedVehicle,
     createVehicle,
     deleteVehicle,
     searchVehicles

@@ -1,0 +1,38 @@
+<%- include('../partials/header') %>
+<main class="admin-view">
+    <h1>Service Management Queue</h1>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Customer</th>
+                <th>Vehicle/Service</th>
+                <th>Status</th>
+                <th>Employee Notes</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% requests.forEach(request => { %>
+                <tr>
+                    <td><%= request.customer_name %> (<%= request.customer_email %>)</td>
+                    <td><strong><%= request.vehicle_info %></strong> - <%= request.service_type %></td>
+                    <form action="/admin/services/update" method="POST">
+                        <input type="hidden" name="id" value="<%= request.id %>">
+                        <td>
+                            <select name="status" class="status-select">
+                                <option value="Submitted" <%= request.status === 'Submitted' ? 'selected' : '' %>>Submitted</option>
+                                <option value="In Progress" <%= request.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+                                <option value="Completed" <%= request.status === 'Completed' ? 'selected' : '' %>>Completed</option>
+                            </select>
+                        </td>
+                        <td>
+                            <textarea name="notes" placeholder="Add shop notes..."><%= request.employee_notes %></textarea>
+                        </td>
+                        <td><button type="submit" class="btn-update">Save</button></td>
+                    </form>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</main>
+<%- include('../partials/footer') %>

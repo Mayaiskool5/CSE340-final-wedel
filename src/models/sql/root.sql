@@ -136,3 +136,13 @@ CREATE TABLE vehicle_images (
     image_url TEXT NOT NULL,
     is_primary BOOLEAN DEFAULT FALSE
 );
+
+CREATE TABLE IF NOT EXISTS activity_logs (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    action_type VARCHAR(100) NOT NULL, -- e.g., 'ADD_VEHICLE', 'DELETE_REVIEW'
+    description TEXT NOT NULL,         -- e.g., 'Admin deleted review #42'
+    ip_address VARCHAR(45),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

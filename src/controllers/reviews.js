@@ -1,4 +1,4 @@
-import { addReview, deleteReview, updateReview } from '../models/catalog/reviews-model.js';
+import { addReview, deleteReview, updateReview } from '../models/catalog/reviews.js';
 
 // Adding a new review
 const processReview = async (req, res, next) => {
@@ -35,6 +35,7 @@ const processDeleteReview = async (req, res, next) => {
         // Staff (Employee/Owner) can delete any review; Customers only their own.
         const isStaff = ['employee', 'owner'].includes(user.roleName);
         const success = await deleteReview(id, user.id, isStaff);
+        await logActivity(req, 'DELETE_REVIEW', `Moderator deleted review ID: ${id}`);
 
         req.flash(success ? "success" : "error", success ? "Review removed." : "Permission denied.");
         res.redirect(`/vehicle/${vehicle_slug}`);
@@ -59,6 +60,29 @@ const processUpdateReview = async (req, res, next) => {
     }
 };
 
+const showModerationDashboard = async (req, res, next) => {
+    try {
+        // Fetch all reviews with vehicle and user info
+        const sql = `
+            SELECT r.*, u.name as user_name, v.make, v.model, v.slug as vehicle_slug
+            FROM reviews r
+            JOIN users u ON r.user_id = u.id
+            JOIN vehicles v ON r.vehicle_id = v.id
+            ORDER BY r.created_at DESC`;
+        
+        const result = await db.query(sql);
+        
+        res.render('admin/reviews-moderation', {
+            title: 'Review Moderation',
+            reviews: result.rows
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export { processReview, 
         processDeleteReview, 
-        processUpdateReview };
+        processUpdateReview,
+        showModerationDashboard 
+    };

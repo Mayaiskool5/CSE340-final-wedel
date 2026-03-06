@@ -67,25 +67,37 @@ const getSectionsByVehicleSlug = (slug, sort) => getCatalogData(slug, 'slug', so
 const getVehiclesByOwnerId = (id, sort) => getCatalogData(id, 'id', sort, 'owner');
 const getVehiclesByOwnerSlug = (slug, sort) => getCatalogData(slug, 'slug', sort, 'owner');
 
-const getAllVehicles = async () => {
-    const query = `
-        SELECT DISTINCT ON (slug) 
-            v.id, v.name, v.vehicle_code as code, v.description, v.slug 
+const getAllVehicles = async (isFeatured = false) => {
+    let query = `
+        SELECT DISTINCT ON (v.slug) 
+            v.id, v.make, v.model, v.year, v.price, v.slug, v.featured,
+            c.name as category_name,
+            i.image_url as main_image
         FROM vehicles v
-        ORDER BY slug, name ASC
+        LEFT JOIN categories c ON v.category_id = c.id
+        LEFT JOIN vehicle_images i ON v.id = i.vehicle_id AND i.is_primary = true
+        WHERE v.availability_status = true
     `;
+    
+    if (isFeatured) {
+        query += ` AND v.featured = true`;
+    }
+
+    query += ` ORDER BY v.slug, v.year DESC`;
+    
     const { rows } = await db.query(query);
     return rows;
 };
 
 const getVehiclesBySlug = async (slug) => {
     const query = `
-        SELECT id, name, vehicle_code as code, description, slug 
-        FROM vehicles 
-        WHERE slug = $1
+        SELECT v.*, c.name as category_name 
+        FROM vehicles v
+        LEFT JOIN categories c ON v.category_id = c.id
+        WHERE v.slug = $1
     `;
     const { rows } = await db.query(query, [slug]);
-    return rows[0] || {}; // Return empty object if not found to match your controller logic
+    return rows[0] || null; // Returning null is safer for your Controller's 404 check
 };
 
 export { getAllVehicles,
