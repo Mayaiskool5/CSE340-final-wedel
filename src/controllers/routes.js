@@ -5,7 +5,7 @@ import { vehicleListPage } from './vehicles/vehicle.js';
 import contactRoutes, { handleContactSubmission } from './forms/contact.js';
 import loginRoutes, { processLogin, processLogout, showDashboard } from './forms/login.js';
 import { requireLogin } from '../middleware/auth.js';
-import { processReview } from '../controllers/reviews-controller.js';
+import { processReview, processDeleteReview, processUpdateReview } from '../controllers/reviews.js';
 import { 
     showRegistrationForm, 
     processRegistration, 
@@ -27,7 +27,7 @@ import {
 
 import { requireRole } from '../../middleware/auth.js';
 import * as serviceCtrl from '../service/service.js';
-import * as ownerCtrl from './vehicles/ownerController.js';
+import * as ownerCtrl from './vehicles/owner.js';
 
 const router = Router();
 
@@ -62,6 +62,8 @@ router.post('/register', registrationValidation, processRegistration);
 router.get('/register/list', requireLogin, showAllUsers);
 
 router.post('/reviews/add', requireLogin, processReview);
+router.post('/reviews/update/:id', requireLogin, processUpdateReview);
+router.post('/reviews/delete/:id', requireLogin, processDeleteReview);
 
 // Edit Account (GET and POST)
 router.get('/register/:id/edit', showEditAccountForm);
@@ -69,6 +71,9 @@ router.post('/register/:id/edit', editValidation, processEditAccount);
 
 // Delete Account
 router.post('/register/:id/delete', processDeleteAccount);
+
+// Validation rules for registration form
+router.use('/register', editValidation);
 
 // Add login-specific styles to all login routes
 router.use('/login', (req, res, next) => {
@@ -80,9 +85,6 @@ router.use('/login', (req, res, next) => {
 router.use('/login', loginRoutes);
 
 router.post('/login', loginValidation, processLogin);
-
-// Validation rules for registration form
-router.use('/register', editValidation);
 
 // Authentication-related routes at root level
 router.get('/logout', processLogout);
@@ -118,6 +120,15 @@ router.post('/admin/inventory/delete/:id', requireRole('owner'), ownerCtrl.proce
 router.get('/catalog', vehicleCatalogPage);
 router.get('/browse/:category?', vehicleListPage);
 router.get('/vehicle/:slugId', vehicleDetailPage);
+
+// Owner Only: Category management routes
+router.use('/admin/categories', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/admin.css">');
+    next();
+});
+router.get('/admin/categories', requireRole('owner'), catCtrl.showCategoryManager);
+router.post('/admin/categories/add', requireRole('owner'), catCtrl.processAddCategory);
+router.post('/admin/categories/delete/:id', requireRole('owner'), catCtrl.processDeleteCategory);
 
 // Vehicle directory routes
 router.get('/vehicle', vehicleListPage);

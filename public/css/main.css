@@ -104,3 +104,32 @@ main .featured-vehicles {
         }
     }
 }
+
+.search-form { 
+    display: flex; 
+    gap: 10px; 
+    max-width: 600px; 
+    margin: 1rem 0; 
+}
+
+.search-input { 
+    flex: 1; 
+    padding: 10px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+}
+
+.btn-search { 
+    background: #007bff; 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+.btn-clear { 
+    align-self: center; 
+    color: #666; 
+    text-decoration: none; 
+    font-size: 0.9rem; 
+}

@@ -1,0 +1,27 @@
+<%- include('../partials/header') %>
+<main class="admin-container">
+    <h1>Manage Categories</h1>
+
+    <!-- Add Category Section -->
+    <div class="category-card">
+        <form action="/admin/categories/add" method="POST" class="category-form">
+            <input type="text" name="name" placeholder="New Category Name" required>
+            <button type="submit" class="btn-add">Add Category</button>
+        </form>
+    </div>
+
+    <!-- Category List Section -->
+    <ul class="category-list">
+        <% categories.forEach(cat => { %>
+            <li class="category-item">
+                <span class="category-name"><%= cat.name %></span>
+                <form action="/admin/categories/delete/<%= cat.id %>" method="POST">
+                    <button type="submit" class="btn-delete" onclick="return confirm('Delete this category?')">
+                        Remove
+                    </button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+</main>
+<%- include('../partials/footer') %>

@@ -12,10 +12,7 @@ const getVehicle = async (identifier, identifierType = 'id') => {
     // Build WHERE clause dynamically - search by slug or id
     const whereClause = identifierType === 'slug' ? 'v.slug = $1' : 'v.id = $1';
     
-    /**
-     * Join vehicle with makes to get make information.
-     * Aliases: f = vehicle, d = make (since we want the make name and code).
-     */
+    // Join vehicles with makes to get make information
     const query = `
         SELECT v.*, 
             c.name as category_name, 
@@ -40,10 +37,7 @@ const getVehicle = async (identifier, identifierType = 'id') => {
     };
 };
 
-/**
- * Browsing vehicles by category (Trucks, Vans, etc.) 
- * as per your Public Page requirements.
- */
+// Browse vehicles by category name (Trucks, Vans, etc.)
 const getVehiclesByCategory = async (categoryName) => {
     const query = `
         SELECT v.*, i.image_url
@@ -56,9 +50,7 @@ const getVehiclesByCategory = async (categoryName) => {
     return result.rows;
 };
 
-/**
- * Create a new vehicle in the inventory.
- */
+// Create a new vehicle in the inventory
 const createVehicle = async (data) => {
     const { make, model, year, price, mileage, specs, description, category_id, slug } = data;
     const query = `
@@ -70,11 +62,23 @@ const createVehicle = async (data) => {
     return result.rows[0];
 };
 
-/**
- * Delete a vehicle and its associated images (via CASCADE).
- */
+// Delete a vehicle and its assiciated images
 const deleteVehicle = async (id) => {
     return await db.query('DELETE FROM vehicles WHERE id = $1', [id]);
+};
+
+// Search vehicles by a single word across multiple columns (make, model, year)
+const searchVehicles = async (term) => {
+    const query = `
+        SELECT v.*, i.image_url
+        FROM vehicles v
+        LEFT JOIN vehicle_images i ON v.id = i.vehicle_id AND i.is_primary = true
+        WHERE (v.make ILIKE $1 OR v.model ILIKE $1 OR v.year::text ILIKE $1)
+        AND v.availability_status = true
+        ORDER BY v.year DESC
+    `;
+    const result = await db.query(query, [`%${term}%`]); // % are wildcards
+    return result.rows;
 };
 
 
@@ -86,5 +90,6 @@ export {
     getVehicleBySlug, 
     getVehiclesByCategory,
     createVehicle,
-    deleteVehicle
+    deleteVehicle,
+    searchVehicles
 };

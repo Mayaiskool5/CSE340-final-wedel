@@ -1,0 +1,69 @@
+/* Main Container */
+.admin-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Category Card & Form */
+.category-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.category-form {
+    display: flex;
+    gap: 10px;
+}
+
+.category-form input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* List Styling */
+.category-list {
+    list-style: none;
+    padding: 0;
+}
+
+.category-item {
+    background: #fff;
+    padding: 1rem;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid #28a745;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Action Buttons */
+.btn-add { 
+    background: #28a745; 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+
+.btn-delete { 
+    background: #dc3545; 
+    color: white; 
+    border: none; 
+    padding: 5px 12px; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-size: 0.85rem; 
+}
+
+.btn-delete:hover { 
+    background: #c82333; 
+}

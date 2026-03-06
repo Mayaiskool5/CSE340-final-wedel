@@ -2,6 +2,18 @@
 <link rel="stylesheet" href="/css/main.css">
 <main>
     <h1>Vehicles</h1>
+
+    <section class="search-section mb-4">
+        <form action="/browse" method="GET" class="search-form">
+            <input type="text" name="q" placeholder="Search by make, model, or year..." 
+                value="<%= searchTerm %>" class="search-input">
+            <button type="submit" class="btn-search">Search</button>
+            <% if (searchTerm) { %>
+                <a href="/browse" class="btn-clear">Clear</a>
+            <% } %>
+        </form>
+    </section>
+
     <div class="vehicle-grid">
         <% vehicles.forEach(vehicle => { %>
             <div class="vehicle-card">

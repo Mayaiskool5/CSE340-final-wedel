@@ -2,25 +2,22 @@ import { getVehicleBySlug, getSortedVehicle, getVehiclesByCategory } from '../..
 
 const vehicleListPage = async (req, res, next) => {
     try {
+        const searchTerm = req.query.q; // Access the ?q= parameter
         const { category } = req.params;
-        const validSortOptions = ['make', 'model', 'year', 'price'];
-        const sortBy = validSortOptions.includes(req.query.sort) ? req.query.sort : 'make';
-        
         let vehicleList;
-        
-        if (category) {
-            // Filtered list for category pages (Trucks, SUVs, etc.)
+
+        if (searchTerm) {
+            vehicleList = await searchVehicles(searchTerm);
+        } else if (category) {
             vehicleList = await getVehiclesByCategory(category);
         } else {
-            // General list for the main "Browse" page
-            vehicleList = await getSortedVehicle(sortBy);
+            vehicleList = await getSortedVehicle('make');
         }
 
         res.render('vehicles/list', {
-            title: category ? `${category} Inventory` : 'Vehicle Directory',
+            title: searchTerm ? `Results for "${searchTerm}"` : 'Vehicle Directory',
             vehicles: vehicleList,
-            currentSort: sortBy,
-            currentCategory: category || 'All'
+            searchTerm: searchTerm || ''
         });
     } catch (error) {
         next(error);
