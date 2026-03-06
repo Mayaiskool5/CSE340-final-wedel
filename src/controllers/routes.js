@@ -30,7 +30,7 @@ import {
 import { requireRole } from '../middleware/auth.js';
 import * as serviceCtrl from './service/service.js';
 import * as ownerCtrl from './vehicles/owner.js';
-import * as catCtrl from './catalog/vehicle-catalog.js'; 
+import * as catCtrl from './vehicles/category.js'; 
 
 
 const router = Router();
@@ -135,10 +135,9 @@ router.post('/admin/services/update', requireRole(['employee', 'owner']), proces
 // Vehicle catalog routes
 router.get('/catalog', vehicleCatalogPage);
 router.get('/vehicle/:slugId', vehicleDetailPage);
-router.get('/browse/:category*', vehicleListPage);
-router.get('/browse/:category{(.*)}?', vehicleListPage);
-router.get('/browse', vehicleListPage);
-router.get('/browse/:category', vehicleListPage);
+router.get('/browse', vehicleListPage); 
+router.get('/browse/:category', vehicleListPage); 
+
 
 
 // Owner Only: Category management routes

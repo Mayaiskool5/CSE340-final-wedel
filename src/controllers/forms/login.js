@@ -136,7 +136,7 @@ const showDashboard = async (req, res, next) => {
         // If the user is an employee/owner, this will return an empty array or 
         // you could fetch all pending requests instead.
         let serviceHistory = [];
-        if (user.roleName === 'customer') {
+        if (user.role_name === 'customer') {
             serviceHistory = await getRequestsByUser(user.id);
         }
 

@@ -8,22 +8,14 @@ import db from '../db.js';
  * @returns {Promise<Object|null>} User object with password hash or null if not found
  */
 const findUserByEmail = async (email) => {
-    const query = `
-        SELECT 
-            users.id, 
-            users.name, 
-            users.email, 
-            users.password,
-            users.created_at,
-            roles.role_name AS "roleName"
-        FROM users
-        LEFT JOIN roles ON users.role_id = roles.id
-        WHERE LOWER(users.email) = LOWER($1)
-        LIMIT 1
-    `;
-    const result = await db.query(query, [email]);
-    return result.rows[0] || null;
-};
+    const sql = `
+        SELECT u.*, r.role_name 
+        FROM users u 
+        JOIN roles r ON u.role_id = r.id 
+        WHERE u.user_email = $1`;
+    const result = await pool.query(sql, [email]);
+    return result.rows[0];
+}
 
 /**
  * Verify a plain text password against a stored bcrypt hash.
