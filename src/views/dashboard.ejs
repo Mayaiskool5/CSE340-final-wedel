@@ -7,14 +7,14 @@
                 <h2>Account Details</h2>
                 <p><strong>Name:</strong> <%= user.name %></p>
                 <p><strong>Email:</strong> <%= user.email %></p>
-                <p><strong>Role:</strong> <%= user.roleName %></p>
+                <p><strong>Role:</strong> <%= user.role_name %></p>
                 <a href="/logout" class="logout-button">Logout</a>
             </div>
         </section>
 
         <!-- Service History Column -->
         <section class="history-main">
-            <% if (user.roleName === 'customer') { %>
+            <% if (user.role_name === 'customer') { %>
                 <div class="card">
                     <div class="card-header">
                         <h3>My Service History</h3>
@@ -50,6 +50,30 @@
                 </div>
             <% } %>
         </section>
+
+        <!-- EMPLOYEE & OWNER SHARED TOOLS -->
+        <% if (user.role_name === 'employee' || user.role_name === 'owner') { %>
+            <section class="admin-panel">
+                <h2>Staff Management Tools</h2>
+                <ul>
+                    <li><a href="/services/manage">Manage Service Requests (Update Status/Notes)</a></li>
+                    <li><a href="/admin/reviews">Moderate/Delete Reviews</a></li>
+                    <li><a href="/contact/responses">View Contact Form Submissions</a></li>
+                </ul>
+            </section>
+        <% } %>
+
+        <!-- OWNER ONLY TOOLS -->
+        <% if (user.role_name === 'owner') { %>
+            <section class="owner-panel">
+                <h2>Owner Controls (Full Admin)</h2>
+                <ul>
+                    <li><a href="/admin/inventory/add">Add/Edit/Delete Vehicles</a></li>
+                    <li><a href="/admin/categories">Manage Vehicle Categories</a></li>
+                    <li><a href="/register/list">View All System Activity & Users</a></li>
+                </ul>
+            </section>
+        <% } %>
     </div>
 </main>
 <%- include('partials/footer') %>

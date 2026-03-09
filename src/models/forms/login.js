@@ -11,9 +11,9 @@ const findUserByEmail = async (email) => {
     const sql = `
         SELECT u.*, r.role_name 
         FROM users u 
-        JOIN roles r ON u.role_id = r.id 
-        WHERE u.user_email = $1`;
-    const result = await pool.query(sql, [email]);
+        LEFT JOIN roles r ON u.role_id = r.id 
+        WHERE u.email = $1`;
+    const result = await db.query(sql, [email]);
     return result.rows[0];
 }
 
