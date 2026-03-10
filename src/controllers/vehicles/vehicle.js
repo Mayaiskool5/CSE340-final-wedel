@@ -1,4 +1,19 @@
-import { getVehicleBySlug, getSortedVehicle, getVehiclesByCategory } from '../../models/vehicles/vehicle.js';
+import { getVehicleBySlug, getSortedVehicle, getVehiclesByCategory, getFeaturedVehicles, searchVehicles } from '../../models/vehicles/vehicle.js';
+import { getReviewsByVehicleId } from '../../models/catalog/reviews.js'; 
+import { getVehicleGallery } from '../../models/vehicles/images.js'; 
+
+// Home Page with Featured Vehicles
+const homePage = async (req, res, next) => {
+    try {
+        const featured = await getFeaturedVehicles();
+        res.render('index', {
+            title: 'Home',
+            featured: featured
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
 const vehicleListPage = async (req, res, next) => {
     try {
@@ -35,10 +50,16 @@ const vehicleDetailPage = async (req, res, next) => {
             return next(err);
         }
 
+        const reviews = await getReviewsByVehicleId(vehicleMember.id);
+        const gallery = await getVehicleGallery(vehicleMember.id);
+
         res.render('vehicles/detail', {
             title: `${vehicleMember.make} ${vehicleMember.model} - Vehicle Profile`,
             vehicle: vehicleMember,
             sections: [],
+            reviews: reviews,
+            gallery: gallery,
+            user: req.session.user || null,
             queryParams: req.query,
             currentSort: req.query.sort || 'year'
         });
@@ -49,4 +70,4 @@ const vehicleDetailPage = async (req, res, next) => {
     }
 };
 
-export { vehicleListPage, vehicleDetailPage};
+export { homePage, vehicleListPage, vehicleDetailPage};

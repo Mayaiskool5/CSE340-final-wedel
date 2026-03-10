@@ -1,4 +1,4 @@
-import { addReview, deleteReview, updateReview } from '../models/catalog/reviews.js';
+import { addReview, deleteReview, updateReview, getReviewsByVehicleId } from '../models/catalog/reviews.js';
 
 // Adding a new review
 const processReview = async (req, res, next) => {
@@ -84,5 +84,5 @@ const showModerationDashboard = async (req, res, next) => {
 export { processReview, 
         processDeleteReview, 
         processUpdateReview,
-        showModerationDashboard 
+        showModerationDashboard
     };

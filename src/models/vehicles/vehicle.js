@@ -101,6 +101,12 @@ const searchVehicles = async (term) => {
     return result.rows;
 };
 
+const getFeaturedVehicles = async () => {
+    const query = `SELECT * FROM vehicles WHERE availability_status = true LIMIT 4`;
+    const result = await db.query(query);
+    return result.rows;
+};
+
 
 const getVehicleById = (id) => getVehicle(id, 'id');
 const getVehicleBySlug = (slug) => getVehicle(slug, 'slug');
@@ -112,5 +118,6 @@ export {
     getSortedVehicle,
     createVehicle,
     deleteVehicle,
-    searchVehicles
+    searchVehicles,
+    getFeaturedVehicles
 };
