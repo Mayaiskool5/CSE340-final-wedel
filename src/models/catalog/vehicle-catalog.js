@@ -101,11 +101,12 @@ const getVehiclesBySlug = async (slug) => {
 
 const getVehicleDetailBySlug = async (slug) => {
     const query = `
-        SELECT v.id, v.slug, v.make, v.model, v.year, v.price, v.description, v.specs, v.featured, v.availability_status,
+        SELECT v.id, v.slug, v.make, v.model, v.year, v.price, v.mileage, v.description, v.specs, v.featured, v.availability_status,
                c.name as category_name, u.name as owner_name, i.image_url as main_image
         FROM vehicles v
         LEFT JOIN categories c ON v.category_id = c.id
-        LEFT JOIN users u ON v.owner_id = u.id
+        LEFT JOIN catalog cat ON v.slug = cat.vehicle_slug
+        LEFT JOIN users u ON cat.member_slug = u.slug
         LEFT JOIN vehicle_images i ON v.id = i.vehicle_id AND i.is_primary = true
         WHERE v.slug = $1
     `;
@@ -118,5 +119,9 @@ const getVehicleDetailBySlug = async (slug) => {
 
 export { getAllVehicles,
         getVehiclesBySlug,
-        getVehicleDetailBySlug
+        getVehicleDetailBySlug,
+        getSectionsByVehicleId,
+        getSectionsByVehicleSlug,
+        getVehiclesByOwnerId,
+        getVehiclesByOwnerSlug
     };

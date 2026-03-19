@@ -18,7 +18,6 @@ const vehicleCatalogPage = async (req, res) => {
             vehicles = await getAllVehicles();
         }
 
-        console.log('DEBUG: vehicles sent to catalog/list:', vehicles);
 
         res.render('vehicle-catalog/list', {
             title: category ? `${category} Inventory` : 'Vehicle Catalog',
@@ -45,7 +44,8 @@ const vehicleDetailPage = async (req, res, next) => {
         // Render the detail page (add sections/reviews as needed)
         res.render('vehicle-catalog/detail', {
             title: `${vehicleData.make} ${vehicleData.model}`,
-            vehicle: vehicleData
+            vehicle: vehicleData,
+            user: req.session.user || null
             // Add sections, reviews, etc. if needed
         });
     } catch (error) {

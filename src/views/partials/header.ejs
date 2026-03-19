@@ -7,31 +7,43 @@
 <link rel="stylesheet" href="/css/main.css">
 </head>
 <body class="<%= bodyClass %>">
-    <header>
+    <header style="text-align: center;">
         <nav>
-            <ul>
+            <ul style="display: inline-block; padding: 0; margin: 0;">
                 <!-- Always visible links -->
-                <li><a href="/">Home</a></li>
-                <li><a href="/catalog">Vehicle Catalog</a></li>
-                <li><a href="/browse">Browse by Category</a></li>
-                <li><a href="/contact">Contact</a></li>
+                <li style="display: inline;"><a href="/">Home</a></li>
+                <span>|</span>
+                <li style="display: inline;"><a href="/catalog">Vehicle Catalog</a></li>
+                <span>|</span>
+                <li style="display: inline;"><a href="/browse">Browse by Category</a></li>
+                <span>|</span>
+                <li style="display: inline;"><a href="/contact">Contact</a></li>
 
                 <!-- Only visible when logged in -->
                 <% const safeUser = typeof user !== 'undefined' ? user : null; %>
                 <% if (isLoggedIn) { %>
-                    <li><a href="/dashboard">Dashboard</a></li>
-                    <li><a href="/contact/responses">Contact Responses</a></li>
-                    <% if (safeUser && safeUser.roleName === 'owner') { %>
-                        <li><a href="/admin/logs">Activity Logs</a></li>
-                        <li><a href="/admin/users">All Users</a></li>
+                    <span>|</span>
+                    <li style="display: inline;"><a href="/dashboard">Dashboard</a></li>
+                    <% if (safeUser && ((safeUser.roleName === 'employee' || safeUser.roleName === 'owner') || (safeUser.role_name === 'employee' || safeUser.role_name === 'owner'))) { %>
+                        <span>|</span>
+                        <li style="display: inline;"><a href="/contact/responses">Contact Responses</a></li>
                     <% } %>
-                    <li><a href="/logout">Logout</a></li>
+                    <% if (safeUser && safeUser.roleName === 'owner') { %>
+                        <span>|</span>
+                        <li style="display: inline;"><a href="/admin/logs">Activity Logs</a></li>
+                        <span>|</span>
+                        <li style="display: inline;"><a href="/admin/users">All Users</a></li>
+                    <% } %>
+                    <span>|</span>
+                    <li style="display: inline;"><a href="/logout">Logout</a></li>
                 <% } %>
 
                 <!-- Only visible when NOT logged in -->
                 <% if (!isLoggedIn) { %>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/register">Register</a></li>
+                    <span>|</span>
+                    <li style="display: inline;"><a href="/login">Login</a></li>
+                    <span>|</span>
+                    <li style="display: inline;"><a href="/register">Register</a></li>
                 <% } %>
             </ul>
         </nav>

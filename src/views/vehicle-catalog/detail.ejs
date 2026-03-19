@@ -1,17 +1,14 @@
 <%- include('../partials/header') %>
-
 <link rel="stylesheet" href="/css/vehicle-catalog.css">
 <link rel="stylesheet" href="/css/main.css">
-
-
 <main>
     <div class="vehicle-header">
         <img src="<%= vehicle.main_image || '/images/no-image.jpg' %>" alt="<%= vehicle.make %> <%= vehicle.model %>" class="vehicle-image">
         <h1><%= vehicle.make %> <%= vehicle.model %> (<%= vehicle.year %>)</h1>
         <p class="vehicle-meta">
             <strong>Category:</strong> <%= vehicle.category_name || 'N/A' %> |
-            <strong>Owner:</strong> <%= vehicle.owner_name %> |
-            <strong>Price:</strong> <%= vehicle.price ? ('$' + vehicle.price) : 'Contact for price' %>
+            <strong>Mileage:</strong> <%= vehicle.mileage ? vehicle.mileage.toLocaleString() + ' mi' : 'N/A' %> |
+            <strong>Price:</strong> <%= vehicle.price ? ('$' + Number(vehicle.price).toLocaleString()) : 'Contact for price' %>
         </p>
         <p class="vehicle-description"><%= vehicle.description || 'No description available.' %></p>
         <% if (vehicle.specs) { %>
@@ -21,8 +18,6 @@
             </div>
         <% } %>
     </div>
-
-
     <section class="add-review">
         <hr>
         <h3>Leave a Review</h3>
@@ -31,8 +26,8 @@
                 <input type="hidden" name="vehicle_id" value="<%= vehicle.id %>">
                 <input type="hidden" name="vehicle_slug" value="<%= vehicle.slug %>">
                 <div class="form-group">
-                    <label for="review_rating">Rating (1-5):</label>
-                    <select name="review_rating" id="review_rating" required>
+                    <label for="rating">Rating (1-5):</label>
+                    <select name="rating" id="rating" required>
                         <option value="5">5 Stars - Excellent</option>
                         <option value="4">4 Stars - Very Good</option>
                         <option value="3">3 Stars - Good</option>
@@ -41,8 +36,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="review_text">Your Review:</label>
-                    <textarea name="review_text" id="review_text" rows="4" placeholder="Share your experience with this <%= vehicle.make %>..." required></textarea>
+                    <label for="comment">Your Review:</label>
+                    <textarea name="comment" id="comment" rows="4" placeholder="Share your experience with this <%= vehicle.make %>..." required></textarea>
                 </div>
                 <button type="submit" class="btn-primary">Submit Review</button>
             </form>

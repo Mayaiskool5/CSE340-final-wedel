@@ -59,8 +59,16 @@ const processLogin = async (req, res) => {
             return res.redirect('/login');
         }
 
+
         // SECURITY: Remove password from user object before storing in session
         delete user.password;
+
+        // Ensure both role_name and roleName are set for compatibility
+        if (user.role_name && !user.roleName) {
+            user.roleName = user.role_name;
+        } else if (user.roleName && !user.role_name) {
+            user.role_name = user.roleName;
+        }
 
         // Store user
         req.session.user = user;

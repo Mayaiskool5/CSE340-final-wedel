@@ -24,7 +24,7 @@
                 >
                 <h3><a href="/vehicle/<%= vehicle.slug %>"><%= vehicle.make %> <%= vehicle.model %></a></h3>
                 <p><strong>Year:</strong> <%= vehicle.year %></p>
-                <p><strong>Price:</strong> <%= vehicle.price ? ('$' + vehicle.price) : 'Contact for price' %></p>
+                <p><strong>Price:</strong> <%= vehicle.price ? ('$' + Number(vehicle.price).toLocaleString()) : 'Contact for price' %></p>
                 <% const safeUser = typeof user !== 'undefined' ? user : null; %>
                 <% if (safeUser && (safeUser.roleName === 'owner' || safeUser.roleName === 'employee')) { %>
                     <a href="/admin/inventory/edit/<%= vehicle.id %>" class="btn-action">Edit</a>

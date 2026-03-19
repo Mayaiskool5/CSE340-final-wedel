@@ -15,7 +15,7 @@
                     <img src="<%= vehicle.image %>" alt="<%= vehicle.make %> <%= vehicle.model %>">
                     <h2><%= vehicle.make %> <%= vehicle.model %></h2>
                     <% if (vehicle.price) { %>
-                        <p class="vehicle-price">Price: $<%= vehicle.price %></p>
+                        <p class="vehicle-price">Price: $<%= Number(vehicle.price).toLocaleString() %></p>
                     <% } %>
                     <% if (vehicle.category_name) { %>
                         <p class="vehicle-category">Category: <%= vehicle.category_name %></p>
