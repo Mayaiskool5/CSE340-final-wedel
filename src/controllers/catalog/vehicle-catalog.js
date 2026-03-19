@@ -1,6 +1,4 @@
-import { getAllVehicles, getVehiclesBySlug } from '../../models/catalog/vehicle-catalog.js';
-import { getSectionsByVehicleSlug } from '../../models/catalog/vehicle-catalog.js';
-import { getReviewsByVehicleId } from '../../models/catalog/reviews.js';
+import { getAllVehicles, getVehiclesBySlug, getVehicleDetailBySlug } from '../../models/catalog/vehicle-catalog.js';
 
 // Route handler for the course catalog list page
 // src/controllers/catalog/vehicle-catalog.js
@@ -20,6 +18,8 @@ const vehicleCatalogPage = async (req, res) => {
             vehicles = await getAllVehicles();
         }
 
+        console.log('DEBUG: vehicles sent to catalog/list:', vehicles);
+
         res.render('catalog/list', {
             title: category ? `${category} Inventory` : 'Vehicle Catalog',
             vehicles: vehicles,
@@ -35,33 +35,21 @@ const vehicleCatalogPage = async (req, res) => {
 const vehicleDetailPage = async (req, res, next) => {
     try {
         const vehicleSlug = req.params.slugId;
-        
-        // 1. Fetch the main vehicle data
-        const vehicleData = await getVehiclesBySlug(vehicleSlug);
+        // Fetch the main vehicle data (with owner and category)
+        const vehicleData = await getVehicleDetailBySlug(vehicleSlug);
 
-        // 2. Check if the object is empty (per your model's design)
-        if (!vehicleData || Object.keys(vehicleData).length === 0) {
+        if (!vehicleData) {
             return next(new Error("Vehicle not found"));
         }
 
-        // 1. Fetch related data in parallel for speed
-        const [sections, reviews] = await Promise.all([
-            getSectionsByVehicleSlug(vehicleSlug, req.query.sort || 'year_desc'),
-            getReviewsByVehicleId(vehicleData.id) // Fetch reviews using vehicle ID
-        ]);
-
-        // 2. Render everything to the view
+        // Render the detail page (add sections/reviews as needed)
         res.render('catalog/detail', {
             title: `${vehicleData.make} ${vehicleData.model}`,
-            vehicle: vehicleData,
-            sections: sections,
-            reviews: reviews, // Pass reviews to the EJS
-            currentSort: req.query.sort || 'year_desc',
-            queryParams: req.query
+            vehicle: vehicleData
+            // Add sections, reviews, etc. if needed
         });
-
     } catch (error) {
-        next(error);
+        res.status(500).send("Error loading vehicle detail");
     }
 };
 
@@ -69,5 +57,5 @@ export { vehicleCatalogPage,
         vehicleDetailPage, 
         getAllVehicles, 
         getVehiclesBySlug, 
-        getSectionsByVehicleSlug 
+        getVehicleDetailBySlug 
     };

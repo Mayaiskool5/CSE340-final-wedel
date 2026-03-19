@@ -19,8 +19,8 @@ const getSortClause = (sortBy) => {
  */
 const getCatalogData = async (identifier, identifierType = 'slug', sortBy = 'year', filterBy = 'vehicle') => {
     const whereClause = identifierType === 'id' ? 
-        (filterBy === 'vehicle' ? 'v.id = $1' : 'm.id = $1') : 
-        (filterBy === 'vehicle' ? 'v.slug = $1' : 'm.slug = $1');
+        (filterBy === 'vehicle' ? 'v.id = $1' : 'u.id = $1') : 
+        (filterBy === 'vehicle' ? 'v.slug = $1' : 'u.slug = $1');
 
     const orderByClause = getSortClause(sortBy);
 
@@ -28,12 +28,11 @@ const getCatalogData = async (identifier, identifierType = 'slug', sortBy = 'yea
         SELECT 
             cat.id, cat.make_name, cat.model_name, cat.year,
             v.vehicle_code, v.name as vehicle_display_name, v.description,
-            m.first_name as owner_first_name, m.last_name as owner_last_name, 
-            m.slug as owner_slug,
+            u.name as owner_name, u.id as owner_id,
             d.name as dept_name, d.code as dept_code
         FROM catalog cat
         JOIN vehicles v ON cat.vehicle_slug = v.slug
-        JOIN members m ON cat.member_slug = m.slug
+        JOIN users u ON cat.member_slug = u.slug
         JOIN departments d ON v.department_id = d.id
         WHERE ${whereClause}
         ORDER BY ${orderByClause}
@@ -52,8 +51,8 @@ const getCatalogData = async (identifier, identifierType = 'slug', sortBy = 'yea
             description: row.description
         },
         owner: {
-            fullName: `${row.owner_first_name} ${row.owner_last_name}`,
-            slug: row.owner_slug
+            name: row.owner_name,
+            id: row.owner_id
         },
         department: {
             name: row.dept_name,
@@ -100,10 +99,19 @@ const getVehiclesBySlug = async (slug) => {
     return rows[0] || null; // Returning null is safer for your Controller's 404 check
 };
 
+const getVehicleDetailBySlug = async (slug) => {
+    const query = `
+        SELECT v.*, c.name as category_name, u.name as owner_name
+        FROM vehicles v
+        LEFT JOIN categories c ON v.category_id = c.id
+        LEFT JOIN users u ON v.owner_id = u.id
+        WHERE v.slug = $1
+    `;
+    const { rows } = await db.query(query, [slug]);
+    return rows[0] || null;
+};
+
 export { getAllVehicles,
         getVehiclesBySlug,
-        getSectionsByVehicleId, 
-        getSectionsByVehicleSlug, 
-        getVehiclesByOwnerId,
-        getVehiclesByOwnerSlug 
+        getVehicleDetailBySlug
     };

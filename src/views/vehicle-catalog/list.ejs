@@ -6,33 +6,20 @@
     <p>Browse our available vehicles and click on any vehicle to see detailed information.</p>
 
     <div class="vehicle-list">
-        <% Object.values(vehicles).forEach(vehicle => { %>
-            <div class="vehicle-card">
-                <img src="<%= vehicle.primary_image %>" alt="<%= vehicle.name %>" class="vehicle-image">
-                <h3><a href="/vehicles/<%= vehicle.slug %>" class="btn"><%= vehicle.name %></a></h3>
-                <p class="vehicle-id"><%= vehicle.vehicleCode %></p>
-                <p class="vehicle-description"><%= vehicle.description %></p>
-            </div>
-        <% }); %>
-    </div>
-
-    <div class="review-card">
-        <strong><%= review.first_name %> <%= review.last_name %></strong>
-        <span>Rating: <%= '★'.repeat(review.review_rating) %></span>
-        <p><%= review.review_text %></p>
-        <small><%= new Date(review.review_date).toLocaleDateString() %></small>
-
-        <!-- ONLY SHOW BUTTONS IF USER OWNS THE REVIEW -->
-        <% if (locals.user && locals.user.id === review.user_id) { %>
-            <div class="review-actions">
-                <a href="/reviews/edit/<%= review.id %>" class="btn-edit">Edit</a>
-                <form action="/reviews/delete" method="POST" style="display:inline;">
-                    <input type="hidden" name="review_id" value="<%= review.id %>">
-                    <input type="hidden" name="vehicle_slug" value="<%= vehicle.slug %>">
-                    <button type="submit" class="btn-delete" onclick="return confirm('Delete this review?')">Delete</button>
-                </form>
-            </div>
+        <% if (vehicles.length === 0) { %>
+            <p>No vehicles found in the catalog.</p>
+        <% } else { %>
+            <% vehicles.forEach(vehicle => { %>
+                <div class="vehicle-card">
+                    <img src="<%= vehicle.main_image || '/images/no-image.jpg' %>" alt="<%= vehicle.make %> <%= vehicle.model %>" class="vehicle-image">
+                    <h3><a href="/vehicle/<%= vehicle.slug %>" class="btn"><%= vehicle.make %> <%= vehicle.model %></a></h3>
+                    <p class="vehicle-id">ID: <%= vehicle.id %></p>
+                    <p class="vehicle-description"><%= vehicle.price ? ('$' + vehicle.price) : '' %></p>
+                </div>
+            <% }); %>
         <% } %>
     </div>
+
+    <!-- Reviews are not shown on the catalog list page -->
 </main>
 <%- include('../partials/footer') %>

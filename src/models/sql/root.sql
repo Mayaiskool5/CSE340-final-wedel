@@ -52,6 +52,9 @@ BEGIN
     END IF;
 END $$;
 
+-- Add a unique slug for each user (for URLs and lookups)
+ALTER TABLE users ADD COLUMN IF NOT EXISTS slug VARCHAR(100) UNIQUE;
+
 -- Organize the inventory (Trucks, SUVs, etc.).
 CREATE TABLE categories (
     id SERIAL PRIMARY KEY,
@@ -73,6 +76,9 @@ CREATE TABLE vehicles (
     category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Add a unique slug for each vehicle (for URLs)
+ALTER TABLE vehicles ADD COLUMN IF NOT EXISTS slug VARCHAR(100) UNIQUE;
 
 -- Links users to vehicles with a rating system.
 CREATE TABLE reviews (
@@ -137,12 +143,75 @@ CREATE TABLE vehicle_images (
     is_primary BOOLEAN DEFAULT FALSE
 );
 
+-- Catalog table: links vehicles to owners and stores make/model/year info
+CREATE TABLE IF NOT EXISTS catalog (
+    id SERIAL PRIMARY KEY,
+    vehicle_slug VARCHAR(100) NOT NULL,
+    member_slug VARCHAR(100) NOT NULL,
+    make_name VARCHAR(50) NOT NULL,
+    model_name VARCHAR(50) NOT NULL,
+    year INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Add indexes for performance (optional)
+CREATE INDEX IF NOT EXISTS idx_catalog_vehicle_slug ON catalog(vehicle_slug);
+CREATE INDEX IF NOT EXISTS idx_catalog_member_slug ON catalog(member_slug);
+
+-- Ensure all required columns and relationships exist for your app
+
+-- USERS TABLE: Add slug if missing
+ALTER TABLE users ADD COLUMN IF NOT EXISTS slug VARCHAR(100) UNIQUE;
+
+-- VEHICLES TABLE: Add slug, specs, and category_id if missing
+ALTER TABLE vehicles ADD COLUMN IF NOT EXISTS slug VARCHAR(100) UNIQUE;
+ALTER TABLE vehicles ADD COLUMN IF NOT EXISTS specs JSONB;
+ALTER TABLE vehicles ADD COLUMN IF NOT EXISTS category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL;
+
+-- CATEGORIES TABLE: Already present
+
+-- REVIEWS TABLE: Ensure correct FKs
+ALTER TABLE reviews ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id) ON DELETE CASCADE;
+ALTER TABLE reviews ADD COLUMN IF NOT EXISTS vehicle_id INTEGER REFERENCES vehicles(id) ON DELETE CASCADE;
+
+-- SERVICE REQUESTS TABLE: Ensure correct FKs and status
+ALTER TABLE service_requests ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id) ON DELETE CASCADE;
+ALTER TABLE service_requests ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'Submitted';
+ALTER TABLE service_requests ADD COLUMN IF NOT EXISTS employee_notes TEXT;
+ALTER TABLE service_requests ADD COLUMN IF NOT EXISTS inventory_vehicle_id INTEGER REFERENCES vehicles(id) ON DELETE SET NULL;
+
+-- CONTACT MESSAGES TABLE: Already present
+
+-- VEHICLE IMAGES TABLE: Ensure correct FK
+ALTER TABLE vehicle_images ADD COLUMN IF NOT EXISTS vehicle_id INTEGER REFERENCES vehicles(id) ON DELETE CASCADE;
+ALTER TABLE vehicle_images ADD COLUMN IF NOT EXISTS is_primary BOOLEAN DEFAULT FALSE;
+
+-- ACTIVITY LOGS TABLE: For owner/admin
 CREATE TABLE IF NOT EXISTS activity_logs (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
-    action_type VARCHAR(100) NOT NULL, -- e.g., 'ADD_VEHICLE', 'DELETE_REVIEW'
-    description TEXT NOT NULL,         -- e.g., 'Admin deleted review #42'
+    action_type VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
     ip_address VARCHAR(45),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- CATALOG TABLE: For linking vehicles to owners (optional, if used)
+CREATE TABLE IF NOT EXISTS catalog (
+    id SERIAL PRIMARY KEY,
+    vehicle_slug VARCHAR(100) NOT NULL,
+    member_slug VARCHAR(100) NOT NULL,
+    make_name VARCHAR(50) NOT NULL,
+    model_name VARCHAR(50) NOT NULL,
+    year INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- DEPARTMENTS TABLE: Only if you need it
+-- CREATE TABLE IF NOT EXISTS departments (
+--     id SERIAL PRIMARY KEY,
+--     name VARCHAR(100) NOT NULL,
+--     code VARCHAR(20) UNIQUE NOT NULL,
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
 
