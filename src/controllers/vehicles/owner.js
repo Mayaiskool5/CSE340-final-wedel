@@ -1,4 +1,7 @@
-import * as vehicleModel from '../../models/vehicles/vehicle.js';
+import * as getVehicle from '../../models/vehicles/vehicle.js';
+import * as getAllCatagories from '../../models/vehicles/category.js';
+import db from '../../models/db.js';
+import { logActivity } from '../../utils/logger.js';
 
 // Show the form to add a vehicle
 const showAddVehicleForm = async (req, res) => {
@@ -25,7 +28,7 @@ const processAddVehicle = async (req, res, next) => {
         const slug = `${year}-${make}-${model}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
         // Save to database via model
-        await vehicleModel.createVehicle({
+        await getVehicle.createVehicle({
             make, model, year, price, mileage, 
             description, category_id, specs, slug
         });
@@ -45,7 +48,7 @@ const processAddVehicle = async (req, res, next) => {
 // Handle deletion
 const processDeleteVehicle = async (req, res, next) => {
     try {
-        await vehicleModel.deleteVehicle(req.params.id);
+        await getVehicle.deleteVehicle(req.params.id);
         req.flash('success', 'Vehicle removed.');
         res.redirect('/vehicle');
     } catch (error) {
@@ -65,10 +68,30 @@ const showActivityLogs = async (req, res, next) => {
     } catch (error) { next(error); }
 };
 
+// Show categories management view
+const showManageCategories = async (req, res, next) => {
+    try {
+        const categories = await getAllCatagories.getAllCategories();
+        res.render('admin/categories', { title: 'Manage Categories', categories });
+    } catch (error) { next(error); }
+};
+
+// Process adding a new category
+const processAddCategory = async (req, res, next) => {
+    try {
+        const { name } = req.body;
+        await getAllCatagories.createCategory(name);
+        req.flash('success', `Category "${name}" added.`);
+        res.redirect('/admin/categories');
+    } catch (error) { next(error); }
+};
+
 
 export {
     showAddVehicleForm,
     processAddVehicle,
     processDeleteVehicle,
-    showActivityLogs
+    showActivityLogs,
+    showManageCategories,
+    processAddCategory
 }
