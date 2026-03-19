@@ -2,7 +2,7 @@
 import { vehicleCatalogPage, vehicleDetailPage } from './catalog/vehicle-catalog.js';
 import { homePage } from './index.js';
 import { vehicleListPage } from './vehicles/vehicle.js';
-import showContactForm, { handleContactSubmission, showContactResponses } from './forms/contact.js';
+import { showContactForm, handleContactSubmission, showContactResponses } from './forms/contact.js';
 import loginRoutes, { processLogin, processLogout, showDashboard } from './forms/login.js';
 import { requireLogin } from '../middleware/auth.js';
 import { processReview, processUpdateReview } from '../controllers/reviews.js';

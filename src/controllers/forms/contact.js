@@ -1,3 +1,4 @@
+import { getAllContactForms } from '../../models/forms/contact.js';
 import { Router } from 'express';
 import { validationResult } from 'express-validator';
 import db from '../../models/db.js';
