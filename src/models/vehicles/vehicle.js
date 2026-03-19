@@ -1,3 +1,10 @@
+// Get inventory statistics (count of vehicles, by category, etc.)
+const getInventoryStats = async () => {
+    const query = `
+        SELECT COUNT(*) AS total, COUNT(DISTINCT category_id) AS categories FROM vehicles WHERE availability_status = true`;
+    const result = await db.query(query);
+    return result.rows[0];
+};
 import db from '../db.js';
 
 /**
@@ -134,5 +141,6 @@ export {
     updateVehicle,
     deleteVehicle,
     searchVehicles,
-    getFeaturedVehicles
+    getFeaturedVehicles,
+    getInventoryStats
 };

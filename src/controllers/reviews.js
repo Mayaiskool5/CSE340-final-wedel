@@ -1,4 +1,5 @@
 import { addReview, deleteReview, updateReview, getReviewsByVehicleId } from '../models/catalog/reviews.js';
+import db from '../models/db.js';
 
 // Adding a new review
 const processReview = async (req, res, next) => {

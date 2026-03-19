@@ -41,4 +41,15 @@ const updateRequestStatus = async (id, status, notes) => {
     return result.rows[0];
 };
 
-export { createServiceRequest, getRequestsByUser, updateRequestStatus };
+/**
+ * Get all service requests (for admin/employee dashboard)
+ */
+const getAllServiceRequests = async () => {
+    const query = `
+        SELECT * FROM service_requests ORDER BY created_at DESC
+    `;
+    const result = await db.query(query);
+    return result.rows;
+};
+
+export { createServiceRequest, getRequestsByUser, updateRequestStatus, getAllServiceRequests };

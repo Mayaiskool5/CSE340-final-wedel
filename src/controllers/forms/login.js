@@ -1,7 +1,10 @@
+import { getInventoryStats } from '../../models/vehicles/vehicle.js';
+import { getAllCategories } from '../../models/vehicles/category.js';
 import { validationResult } from 'express-validator';
 import { findUserByEmail, verifyPassword } from '../../models/forms/login.js';
 import { Router } from 'express';
-import { getRequestsByUser } from '../../models/service/service.js';
+import { getRequestsByUser, getAllServiceRequests } from '../../models/service/service.js';
+import { getAllContactForms } from '../../models/forms/contact.js';
 const router = Router();
 
 /**
@@ -147,7 +150,7 @@ const showDashboard = async (req, res, next) => {
             data.reviews = await getReviewsByUserId(user.id);
         } else if (role === 'employee' || role === 'owner') {
             data.serviceRequests = await getAllServiceRequests();
-            data.contacts = await getAllSubmissions();
+            data.contacts = await getAllContactForms();
             // Show all reviews for staff
             const { getAllReviews } = await import('../../models/catalog/reviews.js');
             data.reviews = await getAllReviews();

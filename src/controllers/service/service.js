@@ -1,4 +1,5 @@
 import * as serviceModel from '../../models/service/service.js';
+import db from '../../models/db.js';
 
 // Show the form to the customer
 const showServiceForm = (req, res) => {
