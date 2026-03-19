@@ -20,7 +20,7 @@ const vehicleCatalogPage = async (req, res) => {
 
         console.log('DEBUG: vehicles sent to catalog/list:', vehicles);
 
-        res.render('catalog/list', {
+        res.render('vehicle-catalog/list', {
             title: category ? `${category} Inventory` : 'Vehicle Catalog',
             vehicles: vehicles,
             currentCategory: category || 'All'
@@ -43,7 +43,7 @@ const vehicleDetailPage = async (req, res, next) => {
         }
 
         // Render the detail page (add sections/reviews as needed)
-        res.render('catalog/detail', {
+        res.render('vehicle-catalog/detail', {
             title: `${vehicleData.make} ${vehicleData.model}`,
             vehicle: vehicleData
             // Add sections, reviews, etc. if needed

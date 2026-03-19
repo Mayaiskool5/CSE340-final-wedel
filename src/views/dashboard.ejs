@@ -8,6 +8,7 @@
                 <p><strong>Name:</strong> <%= user.name %></p>
                 <p><strong>Email:</strong> <%= user.email %></p>
                 <p><strong>Role:</strong> <%= user.role_name %></p>
+                <a href="/register/<%= user.id %>/edit" class="btn-action">Edit</a>
                 <a href="/logout" class="logout-button">Logout</a>
             </div>
         </section>
@@ -50,6 +51,90 @@
                 </div>
             <% } %>
         </section>
+
+        <!-- User Reviews Section for Customers -->
+        <% if (user.role_name === 'customer') { %>
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3>My Reviews</h3>
+            </div>
+            <% if (reviews && reviews.length > 0) { %>
+                <table class="service-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Vehicle</th>
+                            <th>Rating</th>
+                            <th>Review</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% reviews.forEach(review => { %>
+                        <tr>
+                            <td><%= new Date(review.created_at).toLocaleDateString() %></td>
+                            <td><a href="/vehicle/<%= review.vehicle_slug %>"><%= review.make %> <%= review.model %> (<%= review.year %>)</a></td>
+                            <td><%= review.rating %> / 5</td>
+                            <td><%= review.comment %></td>
+                            <td>
+                                <form action="/reviews/delete/<%= review.id %>" method="POST" style="display:inline;">
+                                    <input type="hidden" name="vehicle_slug" value="<%= review.vehicle_slug %>">
+                                    <button type="submit" class="btn-delete" onclick="return confirm('Delete this review?')">Delete</button>
+                                </form>
+                                <a href="/reviews/edit/<%= review.id %>?vehicle_slug=<%= review.vehicle_slug %>" class="btn-action">Edit</a>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p class="p-3">You have not submitted any reviews yet.</p>
+            <% } %>
+        </div>
+        <% } %>
+
+        <!-- Staff/Owner Reviews Section -->
+        <% if (user.role_name === 'employee' || user.role_name === 'owner') { %>
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3>All Reviews</h3>
+            </div>
+            <% if (reviews && reviews.length > 0) { %>
+                <table class="service-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>User</th>
+                            <th>Vehicle</th>
+                            <th>Rating</th>
+                            <th>Review</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% reviews.forEach(review => { %>
+                        <tr>
+                            <td><%= new Date(review.created_at).toLocaleDateString() %></td>
+                            <td><%= review.user_name %></td>
+                            <td><a href="/vehicle/<%= review.vehicle_slug %>"><%= review.make %> <%= review.model %> (<%= review.year %>)</a></td>
+                            <td><%= review.rating %> / 5</td>
+                            <td><%= review.comment %></td>
+                            <td>
+                                <form action="/reviews/delete/<%= review.id %>" method="POST" style="display:inline;">
+                                    <input type="hidden" name="vehicle_slug" value="<%= review.vehicle_slug %>">
+                                    <button type="submit" class="btn-delete" onclick="return confirm('Delete this review?')">Delete</button>
+                                </form>
+                                <!-- Optionally add edit button here -->
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p class="p-3">No reviews found.</p>
+            <% } %>
+        </div>
+        <% } %>
 
         <!-- EMPLOYEE & OWNER SHARED TOOLS -->
         <% if (user.role_name === 'employee' || user.role_name === 'owner') { %>

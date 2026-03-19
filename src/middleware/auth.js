@@ -34,8 +34,9 @@ const requireRole = (roles) => {
         // Ensure 'roles' is always an array so we can use .includes()
         const allowedRoles = Array.isArray(roles) ? roles : [roles];
 
-        // Check against the correct database property: role_name
-        const userRole = req.session.user.role_name; 
+
+        // Check against both possible property names: role_name or roleName
+        const userRole = req.session.user.role_name || req.session.user.roleName;
 
         if (!allowedRoles.includes(userRole)) {
             req.flash('error', 'You do not have permission to access this page.');

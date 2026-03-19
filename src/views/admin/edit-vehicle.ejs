@@ -1,0 +1,72 @@
+<%- include('../partials/header') %>
+<main class="admin-form-container">
+    <h1>Edit Vehicle</h1>
+    <form action="/admin/inventory/edit/<%= vehicle.id %>" method="POST" class="styled-form">
+        <div class="form-row">
+            <div class="field">
+                <label>Make</label>
+                <input type="text" name="make" value="<%= vehicle.make %>" required>
+            </div>
+            <div class="field">
+                <label>Model</label>
+                <input type="text" name="model" value="<%= vehicle.model %>" required>
+            </div>
+            <div class="field">
+                <label>Year</label>
+                <input type="number" name="year" min="1900" max="2026" value="<%= vehicle.year %>" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="field">
+                <label>Price ($)</label>
+                <input type="number" name="price" step="0.01" value="<%= vehicle.price %>" required>
+            </div>
+            <div class="field">
+                <label>Mileage</label>
+                <input type="number" name="mileage" value="<%= vehicle.mileage %>">
+            </div>
+            <div class="field">
+                <label>Category</label>
+                <select name="category_id" required>
+                    <% categories.forEach(cat => { %>
+                        <option value="<%= cat.id %>" <%= cat.id === vehicle.category_id ? 'selected' : '' %>><%= cat.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <fieldset class="specs-section">
+            <legend>Technical Specs (JSONB)</legend>
+            <div class="form-row">
+                <div class="field">
+                    <label>Engine</label>
+                    <input type="text" name="spec_engine" value="<%= vehicle.specs?.engine || '' %>">
+                </div>
+                <div class="field">
+                    <label>Transmission</label>
+                    <input type="text" name="spec_trans" value="<%= vehicle.specs?.trans || '' %>">
+                </div>
+                <div class="field">
+                    <label>Fuel Type</label>
+                    <input type="text" name="spec_fuel" value="<%= vehicle.specs?.fuel || '' %>">
+                </div>
+            </div>
+        </fieldset>
+        <div class="field">
+            <label>Description</label>
+            <textarea name="description" rows="4"><%= vehicle.description %></textarea>
+        </div>
+        <div class="field">
+            <label>Availability</label>
+            <select name="availability_status">
+                <option value="true" <%= vehicle.availability_status ? 'selected' : '' %>>Available</option>
+                <option value="false" <%= vehicle.availability_status === false ? 'selected' : '' %>>Unavailable</option>
+            </select>
+                <option value="true" <%= vehicle.availability_status ? 'selected' : '' %>>Available</option>
+                <option value="false" <%= !vehicle.availability_status ? 'selected' : '' %>>Unavailable</option>
+            </select>
+        </div>
+        <button type="submit">Update Vehicle</button>
+        <a href="/vehicles">Cancel</a>
+    </form>
+</main>
+<%- include('../partials/footer') %>

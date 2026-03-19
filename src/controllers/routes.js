@@ -124,6 +124,11 @@ router.post('/services/update', requireRole(['employee', 'owner']), serviceCtrl.
 router.get('/admin/inventory/add', requireRole('owner'), ownerCtrl.showAddVehicleForm);
 router.post('/admin/inventory/add', requireRole('owner'), ownerCtrl.processAddVehicle);
 
+
+// Edit Vehicle (GET and POST)
+router.get('/admin/inventory/edit/:id', requireRole(['employee', 'owner']), ownerCtrl.showEditVehicleForm);
+router.post('/admin/inventory/edit/:id', requireRole(['employee', 'owner']), ownerCtrl.processEditVehicle);
+
 // Delete Vehicle (Usually triggered by a button in the vehicle list)
 router.post('/admin/inventory/delete/:id', requireRole('owner'), ownerCtrl.processDeleteVehicle);
 
@@ -147,8 +152,15 @@ router.use('/admin/categories', (req, res, next) => {
 });
 router.get('/admin/categories', requireRole('owner'), catCtrl.showCategoryManager);
 router.post('/admin/categories/add', requireRole('owner'), catCtrl.processAddCategory);
+router.post('/admin/categories/edit/:id', requireRole('owner'), catCtrl.processEditCategory);
 router.post('/admin/categories/delete/:id', requireRole('owner'), catCtrl.processDeleteCategory);
+
+// Owner: View all system activity logs
 router.get('/admin/logs', requireRole('owner'), ownerCtrl.showActivityLogs);
+
+// Owner: View all users
+import { showAllUsersAdmin } from './forms/registration.js';
+router.get('/admin/users', requireRole('owner'), showAllUsersAdmin);
 
 
 // Vehicle directory routes

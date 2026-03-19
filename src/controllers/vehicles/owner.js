@@ -1,3 +1,43 @@
+// Show the form to edit a vehicle
+const showEditVehicleForm = async (req, res, next) => {
+    try {
+        const vehicle = await getVehicle.getVehicleById(req.params.id);
+        if (!vehicle) {
+            req.flash('error', 'Vehicle not found.');
+            return res.redirect('/vehicle');
+        }
+        const categories = await db.query('SELECT * FROM categories');
+        res.render('admin/edit-vehicle', {
+            title: `Edit Vehicle - ${vehicle.make} ${vehicle.model}`,
+            vehicle,
+            categories: categories.rows
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Process vehicle edit
+const processEditVehicle = async (req, res, next) => {
+    try {
+        const { make, model, year, price, mileage, description, category_id, availability_status } = req.body;
+        const specs = {
+            engine: req.body.spec_engine,
+            transmission: req.body.spec_trans,
+            fuel: req.body.spec_fuel
+        };
+        await getVehicle.updateVehicle(req.params.id, {
+            make, model, year, price, mileage, description, category_id, specs,
+            availability_status: availability_status === 'true'
+        });
+        await logActivity(req, 'EDIT_VEHICLE', `Vehicle ${req.params.id} updated.`);
+        req.flash('success', 'Vehicle updated successfully.');
+        res.redirect('/vehicle');
+    } catch (error) {
+        console.error('Error updating vehicle:', error);
+        next(error);
+    }
+};
 import * as getVehicle from '../../models/vehicles/vehicle.js';
 import * as getAllCatagories from '../../models/vehicles/category.js';
 import db from '../../models/db.js';
@@ -91,6 +131,8 @@ export {
     showAddVehicleForm,
     processAddVehicle,
     processDeleteVehicle,
+    showEditVehicleForm,
+    processEditVehicle,
     showActivityLogs,
     showManageCategories,
     processAddCategory

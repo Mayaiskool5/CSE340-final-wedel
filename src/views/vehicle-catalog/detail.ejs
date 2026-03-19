@@ -3,87 +3,55 @@
 <link rel="stylesheet" href="/css/vehicle-catalog.css">
 <link rel="stylesheet" href="/css/main.css">
 
+
 <main>
-    <% if (typeof queryParams !== 'undefined' && Object.keys(queryParams).length 
-        <div class="sort-message">
-            <p>Query parameters: <%= JSON.stringify(queryParams) %></p>
-        <% if (queryParams.sort) { %>
-            <p>Currently sorted by: <%= queryParams.sort %></p>
-        <% } else { %>
-            <p>No sorting applied, using default sorting by time.</p>
-    <% } %>
-        </div>
-    <% } else { %>
-        <div class="sort-message">
-            <p>No query parameters provided. Using default sorting by time.</p>
-        </div>
-    <% } %>
-
     <div class="vehicle-header">
-
-        <img src="<%= vehicle.image %>" alt="<%= vehicle.name %>" class="vehicle-image">
-
-        <h1><%= vehicle.name %></h1>
-        <p class="vehicle-meta"><%= vehicle.vehicleCode %> • <%= vehicle.year %> • <%= vehicle.make %> <%= vehicle.model %></p>
-        <p class="vehicle-description"><%= vehicle.description %></p>
-    </div>
-
-    <div class="sections">
-        <div class="sections-header">
-            <h2>Available Sections</h2>
-            <div class="sort-options">
-                <span>Sort by: </span>
-                <a href="/vehicles/<%= vehicle.slug %>?sort=make" class="<%= currentSort === 'make' ? 'active' : '' %>">Make</a>
-                <a href="/vehicles/<%= vehicle.slug %>?sort=model" class="<%= currentSort === 'model' ? 'active' : '' %>">Model</a>
-                <a href="/vehicles/<%= vehicle.slug %>" class="<%= currentSort === 'year' ? 'active' : '' %>">Year</a>
+        <img src="<%= vehicle.main_image || '/images/no-image.jpg' %>" alt="<%= vehicle.make %> <%= vehicle.model %>" class="vehicle-image">
+        <h1><%= vehicle.make %> <%= vehicle.model %> (<%= vehicle.year %>)</h1>
+        <p class="vehicle-meta">
+            <strong>Category:</strong> <%= vehicle.category_name || 'N/A' %> |
+            <strong>Owner:</strong> <%= vehicle.owner_name %> |
+            <strong>Price:</strong> <%= vehicle.price ? ('$' + vehicle.price) : 'Contact for price' %>
+        </p>
+        <p class="vehicle-description"><%= vehicle.description || 'No description available.' %></p>
+        <% if (vehicle.specs) { %>
+            <div class="vehicle-specs">
+                <h3>Specifications</h3>
+                <pre><%= JSON.stringify(vehicle.specs, null, 2) %></pre>
             </div>
-        </div>
-
-        <div class="section-list">
-            <% sections.forEach(section => { %>
-                <div class="section-card">
-                    <div class="section-make">Make: <%= section.make %></div>
-                    <div class="section-model">Model: <%= section.model %></div>
-                    <div class="section-year"><%= section.year %></div>
-                </div>
-            <% }); %>
-        </div>
+        <% } %>
     </div>
+
 
     <section class="add-review">
-    <hr>
-    <h3>Leave a Review</h3>
-
-    <% if (locals.user) { %>
-        <!-- FORM FOR LOGGED-IN USERS -->
-        <form action="/reviews/add" method="POST" class="review-form">
-            <input type="hidden" name="vehicle_id" value="<%= vehicle.id %>">
-            <input type="hidden" name="vehicle_slug" value="<%= vehicle.slug %>">
-            
-            <div class="form-group">
-                <label for="review_rating">Rating (1-5):</label>
-                <select name="review_rating" id="review_rating" required>
-                    <option value="5">5 Stars - Excellent</option>
-                    <option value="4">4 Stars - Very Good</option>
-                    <option value="3">3 Stars - Good</option>
-                    <option value="2">2 Stars - Fair</option>
-                    <option value="1">1 Star - Poor</option>
-                </select>
+        <hr>
+        <h3>Leave a Review</h3>
+        <% if (locals.user) { %>
+            <form action="/reviews/add" method="POST" class="review-form">
+                <input type="hidden" name="vehicle_id" value="<%= vehicle.id %>">
+                <input type="hidden" name="vehicle_slug" value="<%= vehicle.slug %>">
+                <div class="form-group">
+                    <label for="review_rating">Rating (1-5):</label>
+                    <select name="review_rating" id="review_rating" required>
+                        <option value="5">5 Stars - Excellent</option>
+                        <option value="4">4 Stars - Very Good</option>
+                        <option value="3">3 Stars - Good</option>
+                        <option value="2">2 Stars - Fair</option>
+                        <option value="1">1 Star - Poor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="review_text">Your Review:</label>
+                    <textarea name="review_text" id="review_text" rows="4" placeholder="Share your experience with this <%= vehicle.make %>..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary">Submit Review</button>
+            </form>
+        <% } else { %>
+            <div class="login-notice">
+                <p>You must be <a href="/login">logged in</a> to leave a review.</p>
             </div>
-
-            <div class="form-group">
-                <label for="review_text">Your Review:</label>
-                <textarea name="review_text" id="review_text" rows="4" placeholder="Share your experience with this <%= vehicle.make %>..." required></textarea>
-            </div>
-
-            <button type="submit" class="btn-primary">Submit Review</button>
-        </form>
-    <% } else { %>
-        <div class="login-notice">
-            <p>You must be <a href="/login">logged in</a> to leave a review.</p>
-        </div>
-    <% } %>
-</section>
+        <% } %>
+    </section>
 
     <div class="navigation">
         <p><a href="/catalog">&larr; Back to Vehicle Catalog</a></p>

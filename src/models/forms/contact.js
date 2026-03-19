@@ -24,9 +24,9 @@ const createContactForm = async (subject, message) => {
  */
 const getAllContactForms = async () => {
     const query = `
-        SELECT id, subject, message, submitted
-        FROM contact_form
-        ORDER BY submitted DESC
+        SELECT id, name, email, subject, message, created_at
+        FROM contact_messages
+        ORDER BY created_at DESC
     `;
     const result = await db.query(query);
     return result.rows;

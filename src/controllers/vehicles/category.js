@@ -1,3 +1,10 @@
+const processEditCategory = async (req, res, next) => {
+    try {
+        await catModel.updateCategory(req.params.id, req.body.name);
+        req.flash('success', 'Category updated.');
+        res.redirect('/admin/categories');
+    } catch (error) { next(error); }
+};
 import * as catModel from '../../models/vehicles/category.js';
 
 const showCategoryManager = async (req, res, next) => {
@@ -26,5 +33,6 @@ const processDeleteCategory = async (req, res, next) => {
 export {
     showCategoryManager,
     processAddCategory,
+    processEditCategory,
     processDeleteCategory
 }

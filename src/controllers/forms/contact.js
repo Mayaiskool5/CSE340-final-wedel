@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { validationResult } from 'express-validator';
-import { createContactForm, getAllContactForms } from '../../models/forms/contact.js';
+import db from '../../models/db.js';
 
 const router = Router();
 
@@ -35,7 +35,10 @@ const handleContactSubmission = async (req, res) => {
         // Extract validated data
         const { name, email, subject, message } = req.body;
         // Save to database
-        await createContactForm(name, email, subject, message);
+        await db.query(
+            `INSERT INTO contact_messages (name, email, subject, message) VALUES ($1, $2, $3, $4)`,
+            [name, email, subject, message]
+        );
         // After successfully saving to the database
         req.flash('success', 'Thank you for contacting us! We will respond soon.');
         res.redirect('/contact');

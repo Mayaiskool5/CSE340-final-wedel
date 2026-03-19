@@ -12,12 +12,19 @@
             <ul>
                 <!-- Always visible links -->
                 <li><a href="/">Home</a></li>
+                <li><a href="/catalog">Vehicle Catalog</a></li>
+                <li><a href="/browse">Browse by Category</a></li>
                 <li><a href="/contact">Contact</a></li>
 
                 <!-- Only visible when logged in -->
+                <% const safeUser = typeof user !== 'undefined' ? user : null; %>
                 <% if (isLoggedIn) { %>
                     <li><a href="/dashboard">Dashboard</a></li>
                     <li><a href="/contact/responses">Contact Responses</a></li>
+                    <% if (safeUser && safeUser.roleName === 'owner') { %>
+                        <li><a href="/admin/logs">Activity Logs</a></li>
+                        <li><a href="/admin/users">All Users</a></li>
+                    <% } %>
                     <li><a href="/logout">Logout</a></li>
                 <% } %>
 

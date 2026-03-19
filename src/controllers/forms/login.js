@@ -132,7 +132,6 @@ const showDashboard = async (req, res, next) => {
         const role = user?.role_name; // 'customer', 'employee', or 'owner'
         
         let data = {
-            // Replace your existing title line with this:
             title: `${(role?.charAt(0).toUpperCase() || 'User') + (role?.slice(1) || '')} Dashboard`,
             user,
             serviceRequests: [],
@@ -141,19 +140,18 @@ const showDashboard = async (req, res, next) => {
             categories: []
         };
 
-        // Role-Based Data
         if (role === 'customer') {
             data.serviceRequests = await getRequestsByUser(user.id);
-        } 
-        
-        else if (role === 'employee' || role === 'owner') {
-            // Employees & Owners see all active service requests and contact forms
+            // Show only this user's reviews
+            const { getReviewsByUserId } = await import('../../models/catalog/reviews.js');
+            data.reviews = await getReviewsByUserId(user.id);
+        } else if (role === 'employee' || role === 'owner') {
             data.serviceRequests = await getAllServiceRequests();
             data.contacts = await getAllSubmissions();
+            // Show all reviews for staff
+            const { getAllReviews } = await import('../../models/catalog/reviews.js');
             data.reviews = await getAllReviews();
-            
             if (role === 'owner') {
-                // Owners see extra inventory management data
                 data.categories = await getAllCategories();
                 data.inventoryCount = await getInventoryStats();
             }

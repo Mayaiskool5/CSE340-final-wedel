@@ -1,3 +1,16 @@
+// Show all users for admin/owner dashboard
+const showAllUsersAdmin = async (req, res) => {
+    let users = [];
+    try {
+        users = await getAllUsers();
+    } catch (error) {
+        console.error('Error retrieving users:', error);
+    }
+    res.render('admin/users', {
+        title: 'All Users',
+        users
+    });
+};
 import bcrypt from 'bcrypt';
 import { emailExists, saveUser, getAllUsers, getUserById, updateUser, deleteUser } from '../../models/forms/registration.js';
 import { validationResult } from 'express-validator';
@@ -182,11 +195,12 @@ const processDeleteAccount = async (req, res) => {
 };
 
 
-export { 
+export {
     showRegistrationForm, 
     processRegistration, 
-    showAllUsers,
-    showEditAccountForm,
-    processEditAccount,
-    processDeleteAccount
-};
+    showAllUsers, 
+    showAllUsersAdmin,
+    showEditAccountForm, 
+    processEditAccount, 
+    processDeleteAccount 
+}

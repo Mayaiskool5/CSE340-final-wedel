@@ -14,6 +14,7 @@
                     <img src="<%= vehicle.main_image || '/images/no-image.jpg' %>" alt="<%= vehicle.make %> <%= vehicle.model %>" class="vehicle-image">
                     <h3><a href="/vehicle/<%= vehicle.slug %>" class="btn"><%= vehicle.make %> <%= vehicle.model %></a></h3>
                     <p class="vehicle-id">ID: <%= vehicle.id %></p>
+                    <p class="vehicle-category"><strong>Category:</strong> <%= vehicle.category_name || 'N/A' %></p>
                     <p class="vehicle-description"><%= vehicle.price ? ('$' + vehicle.price) : '' %></p>
                 </div>
             <% }); %>

@@ -18,14 +18,18 @@
         <% vehicles.forEach(vehicle => { %>
             <div class="vehicle-card">
                 <img 
-                    src="/images/vehicles/<%= vehicle.slug %>.jpg" 
-                    alt="Photo of <%= vehicle.name %>" 
+                    src="<%= vehicle.image_url || '/images/no-image.jpg' %>" 
+                    alt="Photo of <%= vehicle.make %> <%= vehicle.model %>" 
                     class="vehicle-photo"
                 >
-                <h3><a href="/vehicles/<%= vehicle.slug %>"><%= vehicle.name %></a></h3>
-                <p><strong><%= vehicle.name %></strong></p>
-                <p><%= vehicle.department %></p>
-                <% if (user && user.roleName === 'owner') { %>
+                <h3><a href="/vehicle/<%= vehicle.slug %>"><%= vehicle.make %> <%= vehicle.model %></a></h3>
+                <p><strong>Year:</strong> <%= vehicle.year %></p>
+                <p><strong>Price:</strong> <%= vehicle.price ? ('$' + vehicle.price) : 'Contact for price' %></p>
+                <% const safeUser = typeof user !== 'undefined' ? user : null; %>
+                <% if (safeUser && (safeUser.roleName === 'owner' || safeUser.roleName === 'employee')) { %>
+                    <a href="/admin/inventory/edit/<%= vehicle.id %>" class="btn-action">Edit</a>
+                <% } %>
+                <% if (safeUser && safeUser.roleName === 'owner') { %>
                     <form action="/admin/inventory/delete/<%= vehicle.id %>" method="POST">
                         <button type="submit" class="btn-delete" onclick="return confirm('Delete this vehicle?')">Delete</button>
                     </form>

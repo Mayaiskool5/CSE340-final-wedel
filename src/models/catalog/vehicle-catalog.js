@@ -101,13 +101,18 @@ const getVehiclesBySlug = async (slug) => {
 
 const getVehicleDetailBySlug = async (slug) => {
     const query = `
-        SELECT v.*, c.name as category_name, u.name as owner_name
+        SELECT v.*, c.name as category_name, u.name as owner_name, i.image_url as main_image
         FROM vehicles v
         LEFT JOIN categories c ON v.category_id = c.id
         LEFT JOIN users u ON v.owner_id = u.id
+        LEFT JOIN vehicle_images i ON v.id = i.vehicle_id AND i.is_primary = true
         WHERE v.slug = $1
     `;
     const { rows } = await db.query(query, [slug]);
+    // Patch: If no owner, set owner_name to 'N/A'
+    if (rows[0]) {
+        if (!rows[0].owner_name) rows[0].owner_name = 'N/A';
+    }
     return rows[0] || null;
 };
 

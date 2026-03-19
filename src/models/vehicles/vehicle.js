@@ -82,7 +82,21 @@ const createVehicle = async (data) => {
     return result.rows[0];
 };
 
-// Delete a vehicle and its assiciated images
+
+// Update a vehicle's details
+const updateVehicle = async (id, data) => {
+    const { make, model, year, price, mileage, specs, description, category_id, availability_status } = data;
+    const query = `
+        UPDATE vehicles
+        SET make = $1, model = $2, year = $3, price = $4, mileage = $5, specs = $6, description = $7, category_id = $8, availability_status = $9
+        WHERE id = $10
+        RETURNING *
+    `;
+    const result = await db.query(query, [make, model, year, price, mileage, specs, description, category_id, availability_status, id]);
+    return result.rows[0];
+};
+
+// Delete a vehicle and its associated images
 const deleteVehicle = async (id) => {
     return await db.query('DELETE FROM vehicles WHERE id = $1', [id]);
 };
@@ -117,6 +131,7 @@ export {
     getVehiclesByCategory,
     getSortedVehicle,
     createVehicle,
+    updateVehicle,
     deleteVehicle,
     searchVehicles,
     getFeaturedVehicles

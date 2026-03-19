@@ -1,3 +1,27 @@
+// Get all reviews (for staff dashboard)
+const getAllReviews = async () => {
+    const sql = `
+        SELECT r.*, v.make, v.model, v.year, v.slug as vehicle_slug, u.name as user_name
+        FROM reviews r
+        JOIN vehicles v ON r.vehicle_id = v.id
+        JOIN users u ON r.user_id = u.id
+        ORDER BY r.created_at DESC`;
+    const result = await db.query(sql);
+    return result.rows;
+};
+
+// Get all reviews by a specific user (for dashboard)
+const getReviewsByUserId = async (userId) => {
+    const sql = `
+        SELECT r.*, v.make, v.model, v.year, v.slug as vehicle_slug
+        FROM reviews r
+        JOIN vehicles v ON r.vehicle_id = v.id
+        WHERE r.user_id = $1
+        ORDER BY r.created_at DESC`;
+    const result = await db.query(sql, [userId]);
+    return result.rows;
+};
+
 import db from '../db.js';
 
 // Get all reviews for a specific vehicle with user names
@@ -55,8 +79,10 @@ const deleteReview = async (reviewId, userId = null, isStaff = false) => {
 };
 
 export { 
-    getReviewsByVehicleId, 
-    addReview, 
-    updateReview, 
-    deleteReview 
+    getReviewsByVehicleId,
+    getReviewsByUserId,
+    getAllReviews,
+    addReview,
+    updateReview,
+    deleteReview
 };

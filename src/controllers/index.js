@@ -4,9 +4,10 @@ const homePage = async (req, res) => {
     try {
         // Query for featured vehicles (e.g., those marked as 'featured' in DB)
         const sql = `
-            SELECT v.*, i.image_url 
+            SELECT v.*, i.image_url, c.name as category_name
             FROM vehicles v
             LEFT JOIN vehicle_images i ON v.id = i.vehicle_id AND i.is_primary = true
+            LEFT JOIN categories c ON v.category_id = c.id
             WHERE v.featured = true 
             LIMIT 3`;
         const result = await db.query(sql);
@@ -16,7 +17,9 @@ const homePage = async (req, res) => {
             model: v.model,
             description: v.description,
             slug: v.slug,
-            image: v.image_url || '/images/no-image.jpg' // Matches <%= vehicle.image %>
+            image: v.image_url || '/images/no-image.jpg',
+            price: v.price,
+            category_name: v.category_name
         }));
 
         res.render('home', { 
