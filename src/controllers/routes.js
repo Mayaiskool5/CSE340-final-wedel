@@ -1,4 +1,4 @@
-// Create a router instance and export it for use in server.js
+
 import { vehicleCatalogPage, vehicleDetailPage } from './catalog/vehicle-catalog.js';
 import { homePage } from './index.js';
 import { vehicleListPage } from './vehicles/vehicle.js';
@@ -32,8 +32,9 @@ import * as serviceCtrl from './service/service.js';
 import * as ownerCtrl from './vehicles/owner.js';
 import * as catCtrl from './vehicles/category.js'; 
 
-
 const router = Router();
+
+router.get('/admin/inventory/list', requireRole('owner'), ownerCtrl.showListVehicles);
 
 // Add specific style to all
 router.use('/contact', (req, res, next) => {
@@ -124,6 +125,7 @@ router.post('/services/update', requireRole(['employee', 'owner']), serviceCtrl.
 router.get('/admin/inventory/add', requireRole('owner'), ownerCtrl.showAddVehicleForm);
 router.post('/admin/inventory/add', requireRole('owner'), ownerCtrl.processAddVehicle);
 
+// List Vehicles for Editing (Owner)
 
 // Edit Vehicle (GET and POST)
 router.get('/admin/inventory/edit/:id', requireRole(['employee', 'owner']), ownerCtrl.showEditVehicleForm);

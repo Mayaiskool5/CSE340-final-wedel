@@ -128,6 +128,17 @@ const getFeaturedVehicles = async () => {
     return result.rows;
 };
 
+// Get all vehicles with their category name (for admin list)
+const getAllVehiclesWithCategory = async () => {
+    const query = `
+        SELECT v.*, c.name as category_name
+        FROM vehicles v
+        LEFT JOIN categories c ON v.category_id = c.id
+        ORDER BY v.year DESC, v.make, v.model
+    `;
+    const result = await db.query(query);
+    return result.rows;
+};
 
 const getVehicleById = (id) => getVehicle(id, 'id');
 const getVehicleBySlug = (slug) => getVehicle(slug, 'slug');
@@ -142,5 +153,6 @@ export {
     deleteVehicle,
     searchVehicles,
     getFeaturedVehicles,
-    getInventoryStats
+    getInventoryStats,
+    getAllVehiclesWithCategory
 };

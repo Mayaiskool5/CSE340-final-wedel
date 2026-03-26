@@ -1,7 +1,7 @@
 // Show the form to edit a vehicle
 const showEditVehicleForm = async (req, res, next) => {
     try {
-        const vehicle = await getVehicle.getVehicleById(req.params.id);
+        const vehicle = await getVehicleById(req.params.id);
         if (!vehicle) {
             req.flash('error', 'Vehicle not found.');
             return res.redirect('/vehicle');
@@ -26,7 +26,7 @@ const processEditVehicle = async (req, res, next) => {
             transmission: req.body.spec_trans,
             fuel: req.body.spec_fuel
         };
-        await getVehicle.updateVehicle(req.params.id, {
+        await updateVehicle(req.params.id, {
             make, model, year, price, mileage, description, category_id, specs,
             availability_status: availability_status === 'true'
         });
@@ -38,7 +38,19 @@ const processEditVehicle = async (req, res, next) => {
         next(error);
     }
 };
-import * as getVehicle from '../../models/vehicles/vehicle.js';
+import {
+    getVehicleById,
+    getVehicleBySlug,
+    getVehiclesByCategory,
+    getSortedVehicle,
+    createVehicle,
+    updateVehicle,
+    deleteVehicle,
+    searchVehicles,
+    getFeaturedVehicles,
+    getInventoryStats,
+    getAllVehiclesWithCategory
+} from '../../models/vehicles/vehicle.js';
 import * as getAllCatagories from '../../models/vehicles/category.js';
 import db from '../../models/db.js';
 import { logActivity } from '../../utils/logger.js';
@@ -68,7 +80,7 @@ const processAddVehicle = async (req, res, next) => {
         const slug = `${year}-${make}-${model}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
         // Save to database via model
-        await getVehicle.createVehicle({
+        await createVehicle({
             make, model, year, price, mileage, 
             description, category_id, specs, slug
         });
@@ -88,7 +100,7 @@ const processAddVehicle = async (req, res, next) => {
 // Handle deletion
 const processDeleteVehicle = async (req, res, next) => {
     try {
-        await getVehicle.deleteVehicle(req.params.id);
+        await deleteVehicle(req.params.id);
         req.flash('success', 'Vehicle removed.');
         res.redirect('/vehicle');
     } catch (error) {
@@ -126,6 +138,15 @@ const processAddCategory = async (req, res, next) => {
     } catch (error) { next(error); }
 };
 
+// Show the list of vehicles for editing
+const showListVehicles = async (req, res, next) => {
+    try {
+        const vehicles = await getAllVehiclesWithCategory();
+        res.render('admin/list-vehicles', { title: 'Edit Vehicles', vehicles });
+    } catch (error) {
+        next(error);
+    }
+};
 
 export {
     showAddVehicleForm,
@@ -135,5 +156,6 @@ export {
     processEditVehicle,
     showActivityLogs,
     showManageCategories,
-    processAddCategory
-}
+    processAddCategory,
+    showListVehicles,
+};

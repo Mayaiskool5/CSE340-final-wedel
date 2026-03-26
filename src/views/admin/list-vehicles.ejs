@@ -1,0 +1,30 @@
+<%- include('../partials/header') %>
+<main class="admin-form-container">
+    <h1>Edit Vehicles</h1>
+    <table class="service-table">
+        <thead>
+            <tr>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% vehicles.forEach(vehicle => { %>
+                <tr>
+                    <td><%= vehicle.make %></td>
+                    <td><%= vehicle.model %></td>
+                    <td><%= vehicle.year %></td>
+                    <td><%= vehicle.category_name %></td>
+                    <td>
+                        <a href="/admin/inventory/edit/<%= vehicle.id %>" class="btn-action">Edit</a>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <a href="/dashboard" class="btn-cancel">Back to Dashboard</a>
+</main>
+<%- include('../partials/footer') %>

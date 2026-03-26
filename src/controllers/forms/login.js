@@ -73,6 +73,9 @@ const processLogin = async (req, res) => {
         // Store user
         req.session.user = user;
 
+        // DEBUG: Log the session user object to verify role
+        console.log('Session user after login:', req.session.user);
+
         // Successful login: Personalized welcome message
         const displayName = user.name || "User";
         req.flash('success', `Welcome back, ${displayName}!`);

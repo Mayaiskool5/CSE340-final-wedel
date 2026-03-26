@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- locals.greeting %>
+<div class="site-greeting">
+    <%- locals.greeting %>
+</div>
 <head>
 <%- locals.renderStyles() %>
 <%- locals.renderScripts() %>
@@ -15,8 +17,7 @@
                 <span>|</span>
                 <li style="display: inline;"><a href="/catalog">Vehicle Catalog</a></li>
                 <span>|</span>
-                <li style="display: inline;"><a href="/browse">Browse by Category</a></li>
-                <span>|</span>
+                <!-- Browse by Category removed for catalog unification -->
                 <li style="display: inline;"><a href="/contact">Contact</a></li>
 
                 <!-- Only visible when logged in -->
@@ -24,6 +25,10 @@
                 <% if (isLoggedIn) { %>
                     <span>|</span>
                     <li style="display: inline;"><a href="/dashboard">Dashboard</a></li>
+                    <% if (safeUser && (safeUser.roleName === 'customer' || safeUser.role_name === 'customer')) { %>
+                        <span>|</span>
+                        <li style="display: inline;"><a href="/service/service">Request Service</a></li>
+                    <% } %>
                     <% if (safeUser && ((safeUser.roleName === 'employee' || safeUser.roleName === 'owner') || (safeUser.role_name === 'employee' || safeUser.role_name === 'owner'))) { %>
                         <span>|</span>
                         <li style="display: inline;"><a href="/contact/responses">Contact Responses</a></li>

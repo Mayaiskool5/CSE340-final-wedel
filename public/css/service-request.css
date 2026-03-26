@@ -1,0 +1,110 @@
+/* Professional Service Request Form Styles */
+.service-request-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background: none;
+}
+
+.service-request-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 6px 32px rgba(0,0,0,0.10);
+    padding: 2.5rem 2.2rem 2rem 2.2rem;
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+    border: 1px solid #e3e8ee;
+}
+
+.service-request-card h2 {
+    color: #1741a6;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    text-align: center;
+}
+
+.service-request-card p.text-muted {
+    color: #6c757d;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.service-request-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: center;
+}
+
+.service-request-card label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    color: #1741a6;
+    display: block;
+    text-align: center;
+}
+
+.service-request-card .form-select,
+.service-request-card .form-control {
+    padding: 0.7rem 1rem;
+    border-radius: 6px;
+    border: 1px solid #cfd8dc;
+    font-size: 1.08rem;
+    background: #f8fafc;
+    transition: border 0.2s;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.service-request-card .form-select:focus,
+.service-request-card .form-control:focus {
+    border-color: #2563eb;
+    outline: none;
+}
+
+.service-request-card .form-text {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-top: 0.2rem;
+    text-align: center;
+}
+
+.service-request-card .d-grid {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.service-request-card .btn-primary {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.service-request-card .btn-primary:hover {
+    background: #1741a6;
+}
+
+.service-request-card .btn-secondary {
+    background: #e3e8ee;
+    color: #1741a6;
+    border: none;
+    border-radius: 5px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.service-request-card .btn-secondary:hover {
+    background: #cfd8dc;
+}

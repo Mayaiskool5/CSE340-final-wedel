@@ -1,3 +1,168 @@
+/* Dashboard card headers: white text for headings */
+.card-header h3 {
+    color: #fff !important;
+}
+/* Edit button: blue, small, not full width */
+/* Make Edit button extra small and not full width */
+/* Add margin after Edit button in account details */
+.account-sidebar .btn-action.edit-btn {
+    margin-right: 1rem;
+}
+.btn-action.edit-btn {
+    background: #2563eb !important;
+    color: #fff !important;
+    border: none !important;
+    font-size: 0.90rem;
+    padding: 0.28rem 0.8rem;
+    min-width: 0;
+    width: auto;
+    max-width: 120px;
+    display: inline-block;
+    margin: 0.2rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 1.5;
+}
+.btn-action.edit-btn:hover {
+    background: #1741a6 !important;
+    color: #fff !important;
+}
+/* Book Service button: white background, black text */
+.btn-action {
+    background: #fff !important;
+    color: #181818 !important;
+    border: 1px solid #181818;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+}
+.btn-action:hover {
+    background: #181818 !important;
+    color: #fff !important;
+    border: 1px solid #181818;
+}
+/* Flex utility for dashboard card header */
+.dashboard-header-flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+/* Add padding below the nav bar */
+header nav {
+    padding-bottom: 1.2rem;
+}
+/* Enlarge nav bar separators */
+header nav ul span {
+    font-size: 2.1rem;
+    font-weight: 400;
+    vertical-align: middle;
+    color: #1a2233;
+    margin: 0 0.5rem;
+}
+/* Enlarge navigation text */
+header nav ul li a {
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+/* Center and enlarge the greeting on every page */
+.site-greeting {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 1.5rem auto 1rem auto;
+    letter-spacing: 0.01em;
+    color: #1a2233;
+}
+main > section.text-center, main > section.text-center h1, main > section.text-center p, .featured-vehicles, .featured-vehicles .vehicle-card, .featured-vehicles .vehicle-card * {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+main > section.text-center h1 {
+    margin-top: 2.5rem;
+}
+/* Home page featured vehicles grid and card styles (match vehicle catalog) */
+.featured-vehicles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+.featured-vehicles .vehicle-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border: 1px solid #e3e8ee;
+    padding: 1.7rem 1.2rem 1.4rem 1.2rem;
+    transition: box-shadow 0.22s, transform 0.16s;
+    min-width: 0;
+    text-align: center;
+}
+.featured-vehicles .vehicle-card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+    transform: translateY(-2px) scale(1.01);
+}
+.featured-vehicles .vehicle-card img {
+    width: 100%;
+    max-width: 320px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 1.3rem;
+    background: #f4f7fb;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.featured-vehicles .vehicle-card h2 {
+    margin: 0 0 0.7rem 0;
+    font-size: 1.18rem;
+    color: #1a2233;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+.featured-vehicles .vehicle-card .vehicle-price {
+    color: #1741a6;
+    font-size: 1.13rem;
+    font-weight: 600;
+    margin: 0.7rem 0 0 0;
+    text-align: center;
+}
+.featured-vehicles .vehicle-card .vehicle-category {
+    color: #444;
+    font-size: 0.98rem;
+    margin-bottom: 0.7rem;
+    text-align: center;
+}
+.featured-vehicles .vehicle-card p {
+    margin: 0.3rem 0 0.3rem 0;
+    color: #444;
+    font-size: 1rem;
+}
+.featured-vehicles .vehicle-card a {
+    margin-top: 1rem;
+    background: #2563eb;
+    color: #fff;
+    border-radius: 5px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    display: inline-block;
+}
+.featured-vehicles .vehicle-card a:hover {
+    background: #1741a6;
+}
+.text-center {
+    text-align: center;
+}
 html, body {
     background-color: rgb(8, 103, 21);
     font-family: Arial, sans-serif;
@@ -5,64 +170,120 @@ html, body {
     padding: 20px;
 }
 
-body {
-    background-color: #e8f5e8;
-    nav {
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
 
-        li {
-            display: inline;
-            margin-right: 15px;
-        }
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap');
 
-        a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-
-            &:hover {
-                color: #23aa2a;
-            }
-        }
-    }
+html, body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background: #f4f7fb;
+    color: #222;
+    margin: 0;
+    padding: 0;
 }
 
-/* Flash Messages */
-.flash-messages {
-    margin: 1rem auto;
-    max-width: 1200px;
-    padding: 0 1rem;
+body {
+    min-height: 100vh;
+}
 
+nav {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 3.5rem;
+    width: 100%;
+    justify-content: space-between;
+    max-width: 1200px;
+}
+
+nav li {
+    display: inline;
+}
+
+nav a {
+    text-decoration: none;
+    color: #2563eb;
+    font-weight: 500;
+    transition: color 0.2s;
+    letter-spacing: 0.01em;
+}
+nav a:hover {
+    color: #23aa2a;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto', Arial, sans-serif;
+    color: #181818; /* Much darker for high contrast */
+    font-weight: 800;
+    margin-top: 0;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.08);
+}
+
+/* Utility classes for spacing */
+.mt-2 { margin-top: 2rem; }
+.mb-2 { margin-bottom: 2rem; }
+.p-2 { padding: 2rem; }
+
+/* Card base style */
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* Button base style */
+.btn {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.btn:hover {
+    background: #1741a6;
+}
+
+/* Flash Messages (preserved, but font and color unified) */
     .flash {
         padding: 1rem 1.25rem;
         margin-bottom: 1rem;
         border-radius: 4px;
-        border-left: 4px solid;
-        font-size: 0.95rem;
-        line-height: 1.5;
-
-        &.success {
-            background-color: #d4edda;
-            border-color: #28a745;
-            color: #155724;
-        }
-
-        &.error {
-            background-color: #f8d7da;
-            border-color: #dc3545;
-            color: #721c24;
-        }
-
-        &.warning {
-            background-color: #fff3cd;
-            border-color: #ffc107;
-            color: #856404;
-        }
-
-        &.info {
+}
+.flash {
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    border-left: 4px solid;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+.flash.success {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+}
+.flash.error {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+}
+.flash.warning {
+    background-color: #fff3cd;
+    border-color: #ffc107;
+    color: #856404;
             background-color: #d1ecf1;
             border-color: #17a2b8;
             color: #0c5460;

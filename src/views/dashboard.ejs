@@ -8,7 +8,7 @@
                 <p><strong>Name:</strong> <%= user.name %></p>
                 <p><strong>Email:</strong> <%= user.email %></p>
                 <p><strong>Role:</strong> <%= user.role_name %></p>
-                <a href="/register/<%= user.id %>/edit" class="btn-action">Edit</a>
+                <a href="/register/<%= user.id %>/edit" class="logout-button">Edit</a>
                 <a href="/logout" class="logout-button">Logout</a>
             </div>
         </section>
@@ -17,7 +17,7 @@
         <section class="history-main">
             <% if (user.role_name === 'customer') { %>
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header dashboard-header-flex">
                         <h3>My Service History</h3>
                         <a href="/service/service" class="btn-action">Book Service</a>
                     </div>
@@ -81,7 +81,7 @@
                                     <input type="hidden" name="vehicle_slug" value="<%= review.vehicle_slug %>">
                                     <button type="submit" class="btn-delete" onclick="return confirm('Delete this review?')">Delete</button>
                                 </form>
-                                <a href="/reviews/edit/<%= review.id %>?vehicle_slug=<%= review.vehicle_slug %>" class="btn-action">Edit</a>
+                                <a href="/reviews/edit/<%= review.id %>?vehicle_slug=<%= review.vehicle_slug %>" class="btn-action edit-btn">Edit</a>
                             </td>
                         </tr>
                         <% }) %>
@@ -153,7 +153,8 @@
             <section class="owner-panel">
                 <h2>Owner Controls (Full Admin)</h2>
                 <ul>
-                    <li><a href="/admin/inventory/add">Add/Edit/Delete Vehicles</a></li>
+                    <li><a href="/admin/inventory/list">Edit Vehicles</a></li>
+                    <li><a href="/admin/inventory/add">Add Vehicle</a></li>
                     <li><a href="/admin/categories">Manage Vehicle Categories</a></li>
                     <li><a href="/register/list">View All System Activity & Users</a></li>
                 </ul>

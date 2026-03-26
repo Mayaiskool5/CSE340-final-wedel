@@ -3,7 +3,7 @@ import db from '../../models/db.js';
 
 // Show the form to the customer
 const showServiceForm = (req, res) => {
-    res.render('services/request-form', { title: 'Schedule Service' });
+    res.render('forms/services/request-form', { title: 'Schedule Service' });
 };
 
 // Handle the POST request from the form
