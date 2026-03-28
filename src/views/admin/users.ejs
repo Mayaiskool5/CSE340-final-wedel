@@ -1,23 +1,25 @@
 <%- include('../partials/header') %>
 <main class="admin-container">
-    <h1>All Users</h1>
-    <table class="user-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% users.forEach(user => { %>
-                <tr>
-                    <td><%= user.id %></td>
-                    <td><%= user.name %></td>
-                    <td><%= user.email %></td>
+    <div class="card" style="max-width: 700px; margin: 0.05rem auto 2.5rem auto; padding: 2.2rem 2rem 2rem 2rem; border-radius: 16px; box-shadow: 0 6px 24px rgba(0,0,0,0.13); background: #fff;">
+        <h1 style="text-align:center; font-size:2rem; font-weight:800; color:#2563eb; margin-bottom:1.5rem;">All Users</h1>
+        <table class="user-table" style="width:100%; border-collapse:collapse; background:#fafbfc; border-radius:10px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+            <thead>
+                <tr style="background:#f1f5f9;">
+                    <th style="padding:0.9rem 0.5rem; font-size:1.08rem; color:#1741a6; font-weight:700; border-bottom:2px solid #e3e8ee;">ID</th>
+                    <th style="padding:0.9rem 0.5rem; font-size:1.08rem; color:#1741a6; font-weight:700; border-bottom:2px solid #e3e8ee;">Name</th>
+                    <th style="padding:0.9rem 0.5rem; font-size:1.08rem; color:#1741a6; font-weight:700; border-bottom:2px solid #e3e8ee;">Email</th>
                 </tr>
-            <% }) %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr style="border-bottom:1px solid #e3e8ee;">
+                        <td style="padding:0.7rem 0.5rem; font-size:1.01rem; color:#333;"> <%= user.id %> </td>
+                        <td style="padding:0.7rem 0.5rem; font-size:1.01rem; color:#333;"> <%= user.name %> </td>
+                        <td style="padding:0.7rem 0.5rem; font-size:1.01rem; color:#333;"> <%= user.email %> </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
 </main>
 <%- include('../partials/footer') %>

@@ -1,30 +1,22 @@
 <%- include('../partials/header') %>
-<main class="admin-container">
-    <h1>Manage Categories</h1>
-
-    <!-- Add Category Section -->
-    <div class="category-card">
+<main class="admin-categories-container">
+    <div class="card categories-card">
+        <h1 class="categories-title">Manage Categories</h1>
         <form action="/admin/categories/add" method="POST" class="category-form">
             <input type="text" name="name" placeholder="New Category Name" required>
             <button type="submit" class="btn-add">Add Category</button>
         </form>
+        <ul class="category-list">
+            <% categories.forEach(cat => { %>
+                <li class="category-item">
+                    <form action="/admin/categories/edit/<%= cat.id %>" method="POST" class="edit-remove-form" style="display:flex; align-items:center; width:100%; gap:0.7rem;">
+                        <input type="text" name="name" value="<%= cat.name %>" required class="category-input" style="flex:1; min-width:0;">
+                        <button type="submit" class="btn-edit">Edit</button>
+                        <button type="submit" formaction="/admin/categories/delete/<%= cat.id %>" formmethod="POST" class="btn-delete" onclick="return confirm('Delete this category?')">Remove</button>
+                    </form>
+                </li>
+            <% }) %>
+        </ul>
     </div>
-
-    <!-- Category List Section -->
-    <ul class="category-list">
-        <% categories.forEach(cat => { %>
-            <li class="category-item">
-                <form action="/admin/categories/edit/<%= cat.id %>" method="POST" class="edit-category-form" style="display:inline;">
-                    <input type="text" name="name" value="<%= cat.name %>" required style="width: 150px;">
-                    <button type="submit" class="btn-edit">Edit</button>
-                </form>
-                <form action="/admin/categories/delete/<%= cat.id %>" method="POST" style="display:inline;">
-                    <button type="submit" class="btn-delete" onclick="return confirm('Delete this category?')">
-                        Remove
-                    </button>
-                </form>
-            </li>
-        <% }) %>
-    </ul>
 </main>
 <%- include('../partials/footer') %>

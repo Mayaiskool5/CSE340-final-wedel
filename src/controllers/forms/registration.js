@@ -91,8 +91,9 @@ const showEditAccountForm = async (req, res) => {
         return res.redirect('/register/list');
     }
 
-    // Check permissions: users can edit themselves, admins can edit anyone
-    const canEdit = currentUser.id === targetUserId || currentUser.email === 'admin@example.com';
+
+    // Check permissions: users can edit themselves, admins and owners can edit anyone
+    const canEdit = currentUser.id === targetUserId || currentUser.roleName === 'admin' || currentUser.roleName === 'owner';
 
     if (!canEdit) {
         req.flash('error', 'You do not have permission to edit this account.');
@@ -128,8 +129,9 @@ const processEditAccount = async (req, res) => {
             return res.redirect('/register/list');
         }
 
-        // Check permissions
-        const canEdit = currentUser.id === targetUserId || currentUser.roleName === 'admin';
+
+        // Check permissions: users can edit themselves, admins and owners can edit anyone
+        const canEdit = currentUser.id === targetUserId || currentUser.roleName === 'admin' || currentUser.roleName === 'owner';
 
         if (!canEdit) {
             req.flash('error', 'You do not have permission to edit this account.');

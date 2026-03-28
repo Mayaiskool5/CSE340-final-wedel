@@ -1,25 +1,27 @@
 <%- include('../partials/header') %>
-<main class="admin-container">
-    <h1>System Activity Logs</h1>
-    <table class="service-table">
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>User</th>
-                <th>Action</th>
-                <th>Details</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% logs.forEach(log => { %>
+<main class="admin-logs-container">
+    <div class="card activity-logs-card">
+        <h1 class="activity-logs-title" style="text-align:center;">System Activity Logs</h1>
+        <table class="service-table activity-logs-table">
+            <thead>
                 <tr>
-                    <td><%= new Date(log.created_at).toLocaleString() %></td>
-                    <td><%= log.user_name || 'System' %></td>
-                    <td><span class="badge bg-secondary"><%= log.action_type %></span></td>
-                    <td><%= log.description %></td>
+                    <th>Time</th>
+                    <th>User</th>
+                    <th>Action</th>
+                    <th>Details</th>
                 </tr>
-            <% }) %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <% logs.forEach(log => { %>
+                    <tr>
+                        <td><%= new Date(log.created_at).toLocaleString() %></td>
+                        <td><%= log.user_name || 'System' %></td>
+                        <td><span class="badge bg-secondary"><%= log.action_type %></span></td>
+                        <td><%= log.description %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
 </main>
 <%- include('../partials/footer') %>

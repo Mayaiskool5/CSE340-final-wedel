@@ -1,8 +1,8 @@
 <%- include('../partials/header') %>
-<main class="admin-form-container">
-    <h1>Add New Inventory</h1>
-    
-    <form action="/admin/inventory/add" method="POST" class="styled-form">
+<main class="admin-add-inventory-container">
+    <div class="card add-inventory-card">
+        <h1 class="add-inventory-title">Add New Inventory</h1>
+        <form action="/admin/inventory/add" method="POST" class="styled-form">
         <div class="form-row">
             <div class="field">
                 <label>Make</label>
@@ -64,6 +64,7 @@
             <button type="submit" class="btn-primary">Save Vehicle</button>
             <a href="/vehicle" class="btn-cancel">Cancel</a>
         </div>
-    </form>
+        </form>
+    </div>
 </main>
 <%- include('../partials/footer') %>

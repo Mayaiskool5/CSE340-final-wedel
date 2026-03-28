@@ -1,3 +1,366 @@
+/* Center heading for activity logs */
+.activity-logs-title {
+    text-align: center;
+}
+/* Professional style for admin categories page */
+.admin-categories-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2.5rem;
+}
+.categories-card {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem 2.5rem 2.5rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 14px;
+    background: #fff;
+}
+.categories-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    color: #1741a6;
+    letter-spacing: 0.5px;
+}
+.category-form {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+.category-form input[type="text"] {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border: 1px solid #cfd8dc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #f9fafd;
+    color: #222;
+    transition: border 0.2s;
+}
+.category-form input[type="text"]:focus {
+    border-color: #2563eb;
+    outline: none;
+}
+.btn-add {
+    background: #2563eb;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    border-radius: 5px;
+    padding: 0.45rem 1.2rem;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: background 0.2s, color 0.2s;
+    cursor: pointer;
+}
+.btn-add:hover {
+    background: #1741a6;
+}
+.category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.category-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid #e3e8ee;
+}
+.category-item:last-child {
+    border-bottom: none;
+}
+.category-input {
+    padding: 0.4rem 0.9rem;
+    border: 1px solid #cfd8dc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #f9fafd;
+    color: #222;
+    transition: border 0.2s;
+    width: 150px;
+}
+.category-input:focus {
+    border-color: #2563eb;
+    outline: none;
+}
+.btn-edit {
+    background: #2563eb;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    border-radius: 5px;
+    padding: 0.35rem 1.1rem;
+    font-size: 0.98rem;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: background 0.2s, color 0.2s;
+    cursor: pointer;
+}
+.btn-edit:hover {
+    background: #1741a6;
+}
+.btn-delete {
+    background: #dc3545;
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    border-radius: 5px;
+    padding: 0.35rem 1.1rem;
+    font-size: 0.98rem;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: background 0.2s, color 0.2s;
+    cursor: pointer;
+}
+.btn-delete:hover {
+    background: #a71d2a;
+}
+/* Professional style for admin add inventory page */
+.admin-add-inventory-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2.5rem;
+}
+.add-inventory-card {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem 2.5rem 2.5rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 14px;
+    background: #fff;
+}
+.add-inventory-title {
+    text-align: center;
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: #1741a6;
+    letter-spacing: 0.5px;
+}
+.styled-form .form-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.2rem;
+}
+.styled-form .field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.styled-form label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #1741a6;
+}
+.styled-form input,
+.styled-form select,
+.styled-form textarea {
+    padding: 0.55rem 0.9rem;
+    border: 1px solid #cfd8dc;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+    background: #f9fafd;
+    color: #222;
+    transition: border 0.2s;
+}
+.styled-form input:focus,
+.styled-form select:focus,
+.styled-form textarea:focus {
+    border-color: #2563eb;
+    outline: none;
+}
+.styled-form .specs-section {
+    margin-top: 1.2rem;
+    padding: 1rem 1.2rem;
+    background: #f4f7fb;
+    border-radius: 8px;
+    border: 1px solid #e3e8ee;
+}
+.styled-form legend {
+    font-weight: 700;
+    color: #1741a6;
+    margin-bottom: 0.7rem;
+}
+.styled-form textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+/* More readable Edit button for admin inventory list */
+.inventory-list-table .btn-action {
+    background: #2563eb !important;
+    color: #fff !important;
+    font-weight: 700;
+    border: none;
+    border-radius: 5px;
+    padding: 0.45rem 1.2rem;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: background 0.2s, color 0.2s;
+}
+.inventory-list-table .btn-action:hover {
+    background: #1741a6 !important;
+    color: #fff !important;
+}
+/* Professional style for admin inventory list page */
+.admin-inventory-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2.5rem;
+}
+.inventory-list-card {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem 2.5rem 2.5rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 14px;
+    background: #fff;
+}
+.inventory-list-title {
+    text-align: left;
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: #1741a6;
+    letter-spacing: 0.5px;
+}
+.inventory-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f9fafd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.inventory-list-table th, .inventory-list-table td {
+    padding: 0.85rem 1.1rem;
+    text-align: left;
+    border-bottom: 1px solid #e3e8ee;
+}
+.inventory-list-table th {
+    background: #f1f5fa;
+    color: #1741a6;
+    font-weight: 700;
+    font-size: 1.08rem;
+}
+.inventory-list-table tr:last-child td {
+    border-bottom: none;
+}
+.inventory-list-table td {
+    font-size: 1rem;
+    color: #222;
+}
+/* Professional style for admin logs page */
+.admin-logs-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2.5rem;
+}
+.activity-logs-card {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 2.5rem 2.5rem 2.5rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 14px;
+    background: #fff;
+}
+.activity-logs-title {
+    text-align: left;
+    font-size: 2.1rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: #1741a6;
+    letter-spacing: 0.5px;
+}
+.activity-logs-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f9fafd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.activity-logs-table th, .activity-logs-table td {
+    padding: 0.85rem 1.1rem;
+    text-align: left;
+    border-bottom: 1px solid #e3e8ee;
+}
+.activity-logs-table th {
+    background: #f1f5fa;
+    color: #1741a6;
+    font-weight: 700;
+    font-size: 1.08rem;
+}
+.activity-logs-table tr:last-child td {
+    border-bottom: none;
+}
+.activity-logs-table td {
+    font-size: 1rem;
+    color: #222;
+}
+.activity-logs-table .badge {
+    display: inline-block;
+    padding: 0.3em 0.8em;
+    font-size: 0.95em;
+    border-radius: 12px;
+    background: #e3e8ee;
+    color: #1741a6;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+/* Center the heading on the /register/list page */
+.register-list-title {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* Center the h1 and paragraph on the registration page */
+.registration-form-title,
+.registration-form-desc {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* Center the h1 and paragraph on the login page */
+.login-form-title,
+.login-form-desc {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* Center all content in admin review moderation page */
+.admin-container {
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+}
+.admin-container h1,
+.admin-container .card,
+.admin-container .service-table {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
 /* Dashboard card headers: white text for headings */
 .card-header h3 {
     color: #fff !important;
