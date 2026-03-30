@@ -27,6 +27,9 @@ const showLoginForm = (req, res) => {
  * Process login form submission.
  */
 const processLogin = async (req, res) => {
+    console.log('--- LOGIN ATTEMPT ---');
+    console.log('Request body:', req.body);
+    console.log('Session before login:', req.session);
     // Check for validation errors
     const errors = validationResult(req);
 
@@ -40,10 +43,12 @@ const processLogin = async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        console.log('Finding user by email...');
         // Find user by email using findUserByEmail()
         const user = await findUserByEmail(email);
 
         if (!user) {
+            console.log('No user found for email:', email);
             // User not found: Generic error for security
             console.log(`Login failed: No user found for ${email}`);
             req.flash('error', 'Invalid email or password');
@@ -51,6 +56,7 @@ const processLogin = async (req, res) => {
         }
 
         const isMatch = await verifyPassword(password, user.password);
+        console.log('Password match:', isMatch);
 
         if (!isMatch) {
             // Invalid password: Generic error for security
@@ -72,6 +78,7 @@ const processLogin = async (req, res) => {
 
         // Store user
         req.session.user = user;
+        console.log('User object set in session:', user);
 
         // DEBUG: Log the session user object to verify role
         console.log('Session user after login:', req.session.user);
@@ -82,15 +89,18 @@ const processLogin = async (req, res) => {
 
         // Save the session before redirecting
         req.session.save((err) => {
+            console.log('Session after save attempt:', req.session);
             if (err) {
                 console.error('Session save error:', err);
                 req.flash('error', 'Session error. Please try again.');
                 return res.redirect('/login');
             }
+            console.log('Login successful, redirecting to /dashboard');
             res.redirect('/dashboard');
         });
 
     } catch (error) {
+        console.error('Error during login process:', error);
         // Catch block errors: Server logging and feedback
         console.error('Login processing error:', error);
         req.flash('error', 'An error occurred during login. Please try again.');
