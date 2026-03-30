@@ -1,3 +1,24 @@
+.inventory-list-title.card-title-center {
+    text-align: center !important;
+    width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block;
+}
+.inventory-list-title.card-title-center {
+    text-align: center !important;
+    width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block;
+}
+.inventory-list-title.card-title-center {
+    text-align: center !important;
+    width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block;
+}
 /* Center heading for activity logs */
 .activity-logs-title {
     text-align: center;
@@ -184,10 +205,19 @@
 }
 .styled-form .specs-section {
     margin-top: 1.2rem;
+    margin-bottom: 2rem;
     padding: 1rem 1.2rem;
     background: #f4f7fb;
     border-radius: 8px;
     border: 1px solid #e3e8ee;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+.styled-form .specs-section .form-row {
+    flex-wrap: wrap;
+    gap: 1.2rem;
 }
 .styled-form legend {
     font-weight: 700;

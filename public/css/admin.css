@@ -1,3 +1,59 @@
+.card-title-center {
+    text-align: center !important;
+    width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block;
+}
+/* Center the heading in the card for service management */
+.card-title-center {
+    text-align: center !important;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.notes-update-td {
+    text-align: center !important;
+    vertical-align: middle;
+}
+.notes-update-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.9rem;
+    justify-content: center;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+}
+.notes-update-wrapper textarea {
+    width: 100%;
+    min-width: 180px;
+    max-width: 320px;
+    min-height: 60px;
+    resize: vertical;
+    margin-bottom: 0;
+    display: block;
+}
+/* Center and space notes textarea and update button in service management */
+.notes-update-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    justify-content: center;
+}
+.notes-update-wrapper textarea {
+    width: 220px;
+    min-height: 60px;
+    resize: vertical;
+    margin-bottom: 0;
+}
+/* Extra padding above the Back to Dashboard button */
+.btn-dashboard-spacing {
+    display: inline-block;
+    margin-top: 3.5rem !important;
+}
 /* --- Activity Logs Table --- */
 .admin-container .service-table {
     width: 100%;
@@ -13,6 +69,7 @@
 .admin-container .service-table th, .admin-container .service-table td {
     padding: 1.1rem 1.2rem;
     text-align: center;
+    vertical-align: middle;
 }
 .admin-container .service-table th {
     background: #2563eb;
@@ -31,6 +88,73 @@
     text-align: center;
     margin-top: 2.5rem;
     margin-bottom: 2.5rem;
+    font-size: 2.2rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: #1741a6;
+}
+/* --- Admin Card for Consistent Padding and Shadow --- */
+.admin-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    padding: 2.5rem 2rem 2rem 2rem;
+    margin-bottom: 2.5rem;
+    width: 100%;
+    max-width: 950px;
+}
+
+/* --- Reviews Table Specific --- */
+.reviews-table .review-rating {
+    font-weight: 600;
+    color: #2563eb;
+    font-size: 1.1em;
+}
+.reviews-table .star {
+    color: #fbbf24;
+    font-size: 1.1em;
+    margin-left: 0.1em;
+}
+.reviews-table .review-comment {
+    display: inline-block;
+    max-width: 320px;
+    text-align: left;
+    font-size: 0.98em;
+    color: #333;
+    background: #f7fafd;
+    border-radius: 6px;
+    padding: 0.5em 0.8em;
+    word-break: break-word;
+}
+
+/* --- Modern Delete Button --- */
+.btn-delete-modern {
+    background: #ef4444;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.55em 1.2em;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s, box-shadow 0.18s;
+    box-shadow: 0 2px 8px rgba(239,68,68,0.08);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+.btn-delete-modern:hover, .btn-delete-modern:focus {
+    background: #b91c1c;
+    outline: none;
+}
+.icon-trash {
+    font-size: 1.1em;
+    vertical-align: middle;
+}
+
+/* Inline form for button alignment */
+.inline-form {
+    display: inline;
 }
 
 /* Badge for action type */

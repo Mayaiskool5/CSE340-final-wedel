@@ -1,9 +1,8 @@
 <%- include('../partials/header') %>
-<main class="admin-container">
-    <h1>Review Moderation</h1>
-
-    <div class="card shadow-sm">
-        <table class="service-table">
+<main class="admin-inventory-container">
+    <div class="card inventory-list-card">
+        <h1 class="inventory-list-title card-title-center">Review Moderation</h1>
+        <table class="service-table inventory-list-table">
             <thead>
                 <tr>
                     <th>User</th>
@@ -18,13 +17,16 @@
                     <tr>
                         <td><%= review.user_name %></td>
                         <td><%= review.make %> <%= review.model %></td>
-                        <td><%= review.rating %> Stars</td>
-                        <td><small><%= review.comment %></small></td>
                         <td>
-                            <form action="/admin/reviews/delete/<%= review.id %>" method="POST">
-                                <!-- Pass a redirect slug so the controller knows where to go -->
+                            <span class="review-rating">
+                                <%= review.rating %> <span class="star">&#9733;</span>
+                            </span>
+                        </td>
+                        <td><span class="review-comment"><%= review.comment %></span></td>
+                        <td>
+                            <form action="/admin/reviews/delete/<%= review.id %>" method="POST" class="inline-form">
                                 <input type="hidden" name="vehicle_slug" value="admin/reviews">
-                                <button type="submit" class="btn-delete" onclick="return confirm('Delete this review?')">
+                                <button type="submit" class="btn-action" title="Remove review" onclick="return confirm('Delete this review?')">
                                     Remove
                                 </button>
                             </form>
@@ -33,6 +35,7 @@
                 <% }) %>
             </tbody>
         </table>
+        <a href="/dashboard" class="btn-cancel btn-dashboard-spacing">Back to Dashboard</a>
     </div>
 </main>
 <%- include('../partials/footer') %>

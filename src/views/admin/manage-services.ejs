@@ -1,10 +1,9 @@
 <%- include('../partials/header') %>
 
-<main class="admin-container">
-    <h1>Service Management Queue</h1>
-    
-    <div class="card shadow-sm">
-        <table class="service-table">
+<main class="admin-inventory-container">
+    <div class="card inventory-list-card">
+        <h1 class="inventory-list-title card-title-center">Service Management Queue</h1>
+        <table class="service-table inventory-list-table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -35,15 +34,18 @@
                                     <option value="Completed" <%= req.status === 'Completed' ? 'selected' : '' %>>Completed</option>
                                 </select>
                         </td>
-                        <td>
+                        <td class="notes-update-td">
+                            <div class="notes-update-wrapper">
                                 <textarea name="notes" placeholder="Add notes..."><%= req.employee_notes %></textarea>
-                                <button type="submit" class="btn-save">Update</button>
+                                <button type="submit" class="btn-action">Update</button>
+                            </div>
                             </form>
                         </td>
                     </tr>
                 <% }) %>
             </tbody>
         </table>
+        <a href="/dashboard" class="btn-cancel btn-dashboard-spacing">Back to Dashboard</a>
     </div>
 </main>
 <%- include('../partials/footer') %>
