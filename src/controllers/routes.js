@@ -68,7 +68,10 @@ router.use('/register', editValidation);
 // User List
 router.get('/register/list', requireLogin, showAllUsers);
 
+
+import { showEditReviewForm } from '../controllers/reviews.js';
 router.post('/reviews/add', requireLogin, processReview);
+router.get('/reviews/edit/:id', requireLogin, showEditReviewForm);
 router.post('/reviews/update/:id', requireLogin, processUpdateReview);
 router.post('/reviews/delete/:id', requireLogin, processDeleteReview);
 

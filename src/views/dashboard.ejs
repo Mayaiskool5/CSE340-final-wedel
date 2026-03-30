@@ -22,7 +22,7 @@
                         <a href="/service/service" class="btn-action">Book Service</a>
                     </div>
                     
-                    <% if (typeof serviceHistory !== 'undefined' && serviceHistory.length > 0) { %>
+                    <% if (typeof serviceRequests !== 'undefined' && serviceRequests.length > 0) { %>
                         <table class="service-table">
                             <thead>
                                 <tr>
@@ -32,7 +32,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% serviceHistory.forEach(request => { %>
+                                <% serviceRequests.forEach(request => { %>
                                     <tr>
                                         <td><%= new Date(request.created_at).toLocaleDateString() %></td>
                                         <td><%= request.vehicle_info %></td>

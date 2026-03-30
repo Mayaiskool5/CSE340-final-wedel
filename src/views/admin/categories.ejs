@@ -10,12 +10,30 @@
             <% categories.forEach(cat => { %>
                 <li class="category-item">
                     <form action="/admin/categories/edit/<%= cat.id %>" method="POST" class="edit-remove-form" style="display:flex; align-items:center; width:100%; gap:0.7rem;">
-                        <input type="text" name="name" value="<%= cat.name %>" required class="category-input" style="flex:1; min-width:0;">
-                        <button type="submit" class="btn-edit">Edit</button>
+                        <input type="text" name="name" value="<%= cat.name %>" required class="category-input" style="flex:1; min-width:0;" readonly>
+                        <button type="button" class="btn-edit" onclick="enableEdit(this)">Edit</button>
+                        <button type="submit" class="btn-save" style="display:none;">Save</button>
                         <button type="submit" formaction="/admin/categories/delete/<%= cat.id %>" formmethod="POST" class="btn-delete" onclick="return confirm('Delete this category?')">Remove</button>
                     </form>
                 </li>
             <% }) %>
+            <script>
+            function enableEdit(btn) {
+                // Disable all other inputs and show all edit buttons
+                document.querySelectorAll('.category-input').forEach(input => { input.readOnly = true; });
+                document.querySelectorAll('.btn-edit').forEach(editBtn => { editBtn.style.display = ''; });
+                document.querySelectorAll('.btn-save').forEach(saveBtn => { saveBtn.style.display = 'none'; });
+
+                // Enable this input and show save button
+                const form = btn.closest('form');
+                const input = form.querySelector('.category-input');
+                const saveBtn = form.querySelector('.btn-save');
+                input.readOnly = false;
+                input.focus();
+                btn.style.display = 'none';
+                saveBtn.style.display = '';
+            }
+            </script>
         </ul>
     </div>
 </main>

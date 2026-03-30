@@ -1,0 +1,18 @@
+<%- include('../partials/header') %>
+<div class="container">
+  <h2>Edit Review</h2>
+  <form action="/reviews/update/<%= review.id %>" method="POST">
+    <input type="hidden" name="vehicle_slug" value="<%= review.vehicle_slug %>">
+    <div class="form-group">
+      <label for="rating">Rating (1-5):</label>
+      <input type="number" id="rating" name="rating" min="1" max="5" value="<%= review.rating %>" required>
+    </div>
+    <div class="form-group">
+      <label for="comment">Comment:</label>
+      <textarea id="comment" name="comment" rows="4" required><%= review.comment %></textarea>
+    </div>
+    <button type="submit" class="btn-action">Update Review</button>
+    <a href="/dashboard" class="btn-cancel">Cancel</a>
+  </form>
+</div>
+<%- include('../partials/footer') %>

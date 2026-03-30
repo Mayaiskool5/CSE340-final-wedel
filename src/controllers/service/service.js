@@ -12,14 +12,6 @@ const submitServiceRequest = async (req, res, next) => {
         const userId = req.session.user.id;
         // Basic validation could be added here
         await serviceModel.createServiceRequest(userId, req.body);
-
-        // Use the model we wrote earlier to save to DB
-        await serviceModel.createServiceRequest(userId, {
-            vehicle_info,
-            service_type,
-            inventory_vehicle_id
-        });
-        
         req.flash('success', 'Your service request has been submitted!');
         res.redirect('/dashboard');
     } catch (error) {

@@ -1,5 +1,6 @@
 import { addReview, deleteReview, updateReview, getReviewsByVehicleId } from '../models/catalog/reviews.js';
 import db from '../models/db.js';
+import { logActivity } from '../utils/logger.js';
 
 // Adding a new review
 const processReview = async (req, res, next) => {
@@ -82,8 +83,28 @@ const showModerationDashboard = async (req, res, next) => {
     }
 };
 
+// Show edit review form
+import { getReviewsByUserId } from '../models/catalog/reviews.js';
+const showEditReviewForm = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const user_id = req.session.user.id;
+        // Get all reviews by this user and find the one with the matching id
+        const reviews = await getReviewsByUserId(user_id);
+        const review = reviews.find(r => r.id == id);
+        if (!review) {
+            req.flash('error', 'Review not found or permission denied.');
+            return res.redirect('/dashboard');
+        }
+        res.render('reviews/edit', { review });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export { processReview, 
         processDeleteReview, 
         processUpdateReview,
+        showEditReviewForm,
         showModerationDashboard
     };
