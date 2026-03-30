@@ -40,7 +40,7 @@ This is a full-featured vehicle dealership web application for managing vehicle 
 - [x] Production-ready deployment (Render)
 
 ## Deployment
-- Live site: [Your Render URL Here]
+- Live site: https://cse340-final-wedel.onrender.com/
 - PostgreSQL database connected in production
 - Environment variables managed in `.env`
 
