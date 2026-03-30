@@ -600,13 +600,13 @@ nav li {
 
 nav a {
     text-decoration: none;
-    color: #2563eb;
+    color: #1741a6;
     font-weight: 500;
     transition: color 0.2s;
     letter-spacing: 0.01em;
 }
 nav a:hover {
-    color: #23aa2a;
+    color: #4f8cff;
 }
 
 h1, h2, h3, h4, h5, h6 {
