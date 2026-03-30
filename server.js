@@ -21,8 +21,12 @@ const __dirname = path.dirname(__filename);
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3002;
 
+
 // Setup Express Server
 const app = express();
+
+// Trust the Render proxy for secure cookies
+app.set('trust proxy', 1);
 
 // Initialize PostgreSQL session store
 const pgSession = connectPgSimple(session);
