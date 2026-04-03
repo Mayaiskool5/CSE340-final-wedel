@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="/css/main.css">
 <main>
     <div class="vehicle-header">
-        <img src="<%= vehicle.main_image || '/images/no-image.jpg' %>" alt="<%= vehicle.make %> <%= vehicle.model %>" class="vehicle-image">
+        <img src="<% let img = vehicle.main_image; %><%= img ? (img.startsWith('/') ? img : '/images/vehicles/' + img) : '/images/no-image.jpg' %>" alt="<%= vehicle.make %> <%= vehicle.model %>" class="vehicle-image">
         <h1><%= vehicle.make %> <%= vehicle.model %> (<%= vehicle.year %>)</h1>
         <p class="vehicle-meta">
             <strong>Category:</strong> <%= vehicle.category_name || 'N/A' %> |

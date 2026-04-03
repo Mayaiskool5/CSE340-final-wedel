@@ -20,7 +20,7 @@
         <% } else { %>
             <% vehicles.forEach(vehicle => { %>
                 <div class="vehicle-card">
-                    <img src="<%= vehicle.main_image || vehicle.image_url || '/images/no-image.jpg' %>" alt="<%= vehicle.make %> <%= vehicle.model %>" class="vehicle-image">
+                    <img src="<% let img = vehicle.main_image || vehicle.image_url; %><%= img ? (img.startsWith('/') ? img : '/images/vehicles/' + img) : '/images/no-image.jpg' %>" alt="<%= vehicle.make %> <%= vehicle.model %>" class="vehicle-image">
                     <h3><a href="/vehicle/<%= vehicle.slug %>" class="btn"><%= vehicle.make %> <%= vehicle.model %></a></h3>
                     <p class="vehicle-id">ID: <%= vehicle.id %></p>
                     <p class="vehicle-category"><strong>Category:</strong> <%= vehicle.category_name || 'N/A' %></p>
