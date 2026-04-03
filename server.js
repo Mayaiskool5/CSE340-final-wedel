@@ -120,7 +120,8 @@ app.use(async (err, req, res, next) => {
         NODE_ENV,
         bodyClass: res.locals.bodyClass,
         isLoggedIn: res.locals.isLoggedIn,
-        greeting: res.locals.greeting
+        greeting: res.locals.greeting,
+        flash: req.flash
     };
 
     // Render the appropriate error template with fallback
