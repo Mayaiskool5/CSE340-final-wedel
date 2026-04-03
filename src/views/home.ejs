@@ -12,7 +12,7 @@
         <% if (featuredVehicles && featuredVehicles.length > 0) { %>
             <% featuredVehicles.forEach(vehicle => { %>
                 <div class="vehicle-card">
-                    <img src="<%= vehicle.image %>" alt="<%= vehicle.make %> <%= vehicle.model %>">
+                    <img src="<% let img = vehicle.image; %><%= img ? (img.startsWith('/') ? img : '/images/vehicles/' + img) : '/images/no-image.jpg' %>" alt="<%= vehicle.make %> <%= vehicle.model %>">
                     <h2><%= vehicle.make %> <%= vehicle.model %></h2>
                     <% if (vehicle.price) { %>
                         <p class="vehicle-price">Price: $<%= Number(vehicle.price).toLocaleString() %></p>
