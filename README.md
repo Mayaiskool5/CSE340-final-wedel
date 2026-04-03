@@ -7,7 +7,7 @@ This is a full-featured vehicle dealership web application for managing vehicle 
 - Multiple normalized tables: users, roles, vehicles, categories, reviews, service_requests, contact_messages, activity_logs, etc.
 - Proper foreign keys, CASCADE/SET NULL, and data types.
 - See `/src/models/sql/root.sql` for schema.
-- **ERD:** ![ERD Image Here](./ERD.png)  <!-- Replace with your actual ERD image file -->
+- **ERD:** ![ERD Image Here](./public/images/ERD.png) 
 
 ## User Roles
 - **Owner (Admin):** Full control over users, vehicles, categories, reviews, logs, and all site content.
@@ -21,8 +21,7 @@ This is a full-featured vehicle dealership web application for managing vehicle 
   - Customer: `customer@example.com`
 
 ## Known Limitations
-- [List any incomplete features or known bugs here.]
-- Example: "No email notifications for service request updates."
+- There are no incomplete features or bugs that I know of.
 
 ## Features Checklist
 - [x] Normalized relational database with foreign keys

@@ -1,3 +1,4 @@
+
 -- Tables
 
 CREATE OR REPLACE FUNCTION update_modified_column()
