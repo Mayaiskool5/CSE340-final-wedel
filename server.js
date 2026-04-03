@@ -121,7 +121,8 @@ app.use(async (err, req, res, next) => {
         bodyClass: res.locals.bodyClass,
         isLoggedIn: res.locals.isLoggedIn,
         greeting: res.locals.greeting,
-        flash: typeof req.flash === 'function' ? req.flash.bind(req) : () => ({})
+        flash: typeof req.flash === 'function' ? req.flash.bind(req) : () => ({}),
+        currentYear: res.locals.currentYear || new Date().getFullYear()
     };
 
     // Render the appropriate error template with fallback
