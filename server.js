@@ -96,7 +96,7 @@ app.use((req, res, next) => {
 });
 
 // Global error handler
-app.use((err, req, res, next) => {
+app.use(async (err, req, res, next) => {
     // Prevent infinite loops, if a response has already been sent, do nothing
     if (res.headersSent || res.finished) {
         return next(err);
@@ -105,6 +105,11 @@ app.use((err, req, res, next) => {
     // Determine status and template
     const status = err.status || 500;
     const template = status === 404 ? '404' : '500';
+
+
+    // Ensure res.locals.renderStyles and renderScripts are available for error templates
+    const { setHeadAssetsFunctionality } = await import('./src/middleware/global.js');
+    setHeadAssetsFunctionality(res);
 
     // Prepare data for the template
     const context = {
