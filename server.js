@@ -111,12 +111,16 @@ app.use(async (err, req, res, next) => {
     const { setHeadAssetsFunctionality } = await import('./src/middleware/global.js');
     setHeadAssetsFunctionality(res);
 
-    // Prepare data for the template
+
+    // Prepare data for the template, including all res.locals needed by header/footer
     const context = {
         title: status === 404 ? 'Page Not Found' : 'Server Error',
         error: NODE_ENV === 'production' ? 'An error occurred' : err.message,
         stack: NODE_ENV === 'production' ? null : err.stack,
-        NODE_ENV // Our WebSocket check needs this and its convenient to pass along
+        NODE_ENV,
+        bodyClass: res.locals.bodyClass,
+        isLoggedIn: res.locals.isLoggedIn,
+        greeting: res.locals.greeting
     };
 
     // Render the appropriate error template with fallback
